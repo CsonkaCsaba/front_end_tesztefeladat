@@ -1,85 +1,146 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+
+import { UserStore } from './components/store/UserStore';
+import { storeToRefs } from 'pinia';
+const { users, initials, concat, modalStatus, message, } = storeToRefs(UserStore())
+const { orderByid, getInitials, GetInitial, GetUsers, RelatedInitials, arrays  } = UserStore()
+orderByid()
+getInitials()
+arrays()
+
+
+
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+   <v-layout class="rounded rounded-md">
+    <v-navigation-drawer class="leftnav d-flex align-center justify-center">
+      <div class="mt-10 mb-10">
+        <img src="./assets/logo_.png" alt="logo">
+      </div>
+      <div class="navbarlist">
+        <div class="mt-6">
+          <h5><strong>Messages</strong></h5>
+          <ul>
+            <li><a class="active"><router-link to="/">Inbox</router-link></a></li>   
+            <li><a><router-link to="/">Outbound</router-link></a></li>
+            <li><a><router-link to="/">Contacts</router-link></a></li>
+            <li><a><router-link to="/">Statistic</router-link></a></li>
+        </ul>
+        </div>
+        <div class="mt-10">
+          <h5><strong>Tools</strong></h5>
+          <ul>
+            <li><a><router-link to="/">Chat editor</router-link></a></li>   
+            <li><a><router-link to="/">Automation</router-link></a></li>
+            <li><a><router-link to="/">Site tools</router-link></a></li>
+          </ul>
+        </div>
+        <div class="mt-10">
+          <h5><strong>Settings</strong></h5>
+          <ul>
+            <li><a><router-link to="/">General</router-link></a></li>   
+            <li><a><router-link to="/">Account</router-link></a></li>
+            <li><a><router-link to="/">Billing</router-link></a></li>
+          </ul>
+        </div>
+          <div class="mt-16">
+          <img src="./assets/acc.png" alt="logo">
+          </div>
+      </div>
+    </v-navigation-drawer>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <v-main class="d-flex align-center justify-center main" style="min-height: 300px;">
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+  
+      <!-- <p v-for="(user, index) in users[0]"><strong>{{ user.id }} <br>{{index}}</strong>
+        
+       <p>{{ initial[index].id }}</p>
+      
+      </p>
+      <p v-for="(initial, index) in initials"> {{user.index}}</p>
+      <br>
+      <p v-for="(initial, index) in initials"> {{initial.id }}</p> 
 
-  <RouterView />
+
+     <ul v-for="(user,i) in GetUsers" :key="i">
+                 <li class="fav_item" v-for="(initial,j) in RelatedInitials(user['id'])" :key="j">
+                   {{user['name']}}
+                 </li>
+           </ul> -->
+      <!-- <v-table>
+          <tbody>
+            <tr
+           
+            >
+              <td>{{ user.name }}<br>{{ user.email }}</td>
+            </tr>
+            <tr
+              v-for="initial in initials"
+            >
+              <td>{{ initial}}</td>
+            </tr>
+          </tbody>
+      </v-table> -->
+
+      <!-- <ul>
+        <li v-for="con in concat[0][0]">
+          {{ con.name}}{{ con.name }}
+            <p>{{ con[0][1] }}</p>
+           -->
+          <!-- <li v-for="initial in initials">
+            {{ initial }}
+
+          </li> -->
+          
+<!--           
+        </li>
+      </ul> -->
+      <!-- <ul >
+        <li v-for="(user, i) in users[0]" :key="i"> {{user.name}}</li>
+        <li v-for="(initial) in initials" > {{initial.initial}}</li>
+      </ul> -->
+
+ 
+    </v-main>
+  </v-layout>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<style scoped lang="sass">
+html
+  font-family: "Poppins", sans-serif
+  font-weight: 400
+  font-style: normal
+.navbarlist
+  font-family: "Poppins", sans-serif 
+  font-weight: 400 
+  font-style: light 
+  margin: 15px
+  ul
+    list-style-type: none
+  li
+    margin-top: 15px
+    
+  h5
+    text-transform: uppercase
+  a
+    color: grey
+    pointer: none
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+  a:active
+      color: #4a32d1
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
+.leftnav
+  background-color: #e9eff2
+  border: none
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
+.main
+  p
+    color: grey
+  ul
+      list-style-type: none
 
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
 </style>
