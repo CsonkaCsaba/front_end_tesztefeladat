@@ -4,13 +4,15 @@ import {ref} from 'vue'
 import jsonData from './users.json';
 
 let userData = jsonData;
-
+let ini = []
 export const UserStore = defineStore("UserStore",{
     state: () => {
       return {
         users: [
         ],
         initials:[     
+        ],
+        usersWithInitials:[
         ],
 
         modalElements: [
@@ -44,20 +46,17 @@ export const UserStore = defineStore("UserStore",{
                 let names = element.name.trim().split(' ')
                 let namesFirstPartChar = names[0].charAt(0).toUpperCase()
                 let namesSecoundPartChar = names[1].charAt(0).toUpperCase()
-                let initials = { id: index, initial: namesFirstPartChar + namesSecoundPartChar}
+                let initial = { id: index, initial: namesFirstPartChar + namesSecoundPartChar}
                 index +=1
-                this.initials.push(initials);
-            });
-        },
-        arrays(){
-            let n = this.users
-            let m = this.initials
-
-            n.forEach((num1, index) =>{
-                const num2 = m[index];
-                console.log(m)
+                this.initials.push(initial);
+                ini.push(initial);
+                
             })
-        }
+            this.users[0].forEach(function(element, index) {
+                element.initial = ini[index].initial
+            })
+        },
+        
        
       
 
@@ -283,17 +282,6 @@ export const UserStore = defineStore("UserStore",{
      },
      computed:{
 
-        GetUsers:function(){
-            return this.users;
-        },
-        GetInitial:function(){
-            return  this.initial;
-        },
-        RelatedInitials:function(){
-          return id => this.users.filter(initial => initial.id === id);
-        }
-
-     
       }
 
 })

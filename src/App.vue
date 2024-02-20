@@ -2,11 +2,10 @@
 
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
-const { users, initials, concat, modalStatus, message, } = storeToRefs(UserStore())
-const { orderByid, getInitials, GetInitial, GetUsers, RelatedInitials, arrays  } = UserStore()
+const { users } = storeToRefs(UserStore())
+const { orderByid, getInitials,  } = UserStore()
 orderByid()
 getInitials()
-arrays()
 
 
 
@@ -50,10 +49,55 @@ arrays()
           </div>
       </div>
     </v-navigation-drawer>
+    <!-- <v-app-bar style="border-radius: -20px !important;" class="bar">
+        <p>fdsfsdfsfdsfsd</p>
+    </v-app-bar> -->
 
-    <v-main class="d-flex align-center justify-center main" style="min-height: 300px;">
+    <!-- <div class="container">
+      <div class="row justify-content-md-center">
+          <div class="col" v-for="user in users[0]" :key="user">
+            <p>{{ user.initial }}</p><p> {{ user.name }}</p>
+          </div>
+      </div>
+    </div> -->
 
+<ul id="lista">
+  <li v-for="user in users[0]" :key="user" >
+      <div class="d-inline-flex">
+        <div>
+          <p class="initial">{{ user.initial }}</p> 
+        </div>
+        <div class="username">
+          <p >{{ user.name }}</p>
+          <p>{{ user.email }}</p>
+        </div>
+      
   
+      </div>
+  </li>
+</ul>
+
+      <!-- <div class="d-flex p-2 initial" v-for="user in users[0]">
+        <div>
+          {{ user.initial }}
+        </div>
+        <div>
+          {{ user.name }}
+        </div>
+        <div>
+          {{ user.email }}
+        </div>
+        <div>
+          {{ user.permission }}
+        </div> -->
+            <!-- <p class="initial">{{ user.name }}{{ user.permission }}
+            {{ user.email }}</p> -->
+            <!-- <p  v-for="item in usersWithInitials[0]">{{ item.name }}</p> -->
+    <!-- </div> -->
+      <!-- <li v-for="item in usersWithInitials[0]">{{ item.name }}
+      </li> -->
+      
+    
       <!-- <p v-for="(user, index) in users[0]"><strong>{{ user.id }} <br>{{index}}</strong>
         
        <p>{{ initial[index].id }}</p>
@@ -103,15 +147,16 @@ arrays()
       </ul> -->
 
  
-    </v-main>
+    <!-- </v-main> -->
   </v-layout>
 </template>
 
 <style scoped lang="sass">
-html
+html, body
   font-family: "Poppins", sans-serif
   font-weight: 400
   font-style: normal
+  
 .navbarlist
   font-family: "Poppins", sans-serif 
   font-weight: 400 
@@ -131,16 +176,47 @@ html
   a:active
       color: #4a32d1
 
-
-
 .leftnav
   background-color: #e9eff2
   border: none
 
-.main
+.v-main
+  background-color: white
   p
     color: grey
   ul
       list-style-type: none
+
+.bar
+  border: none !important
+
+.v-toolbar__content
+  border: none !important
+.initial
+  background-color: black
+  color: white
+  margin-right: 16px
+  padding: 25px
+  border: 1px solid
+  border-radius: 50%
+  align-items: center
+  text-align: center
+
+#lista
+  list-style-type: none
+  width: 1000px
+  height:auto
+  margin: 10px
+  li
+    border: none
+    color: grey
+    padding: 10px
+    margin: 10px
+    // p:nth-child(1)
+    //   background-color: black
+.username
+  align-items: left
+  text-align: left
+  margin-top: 15px
 
 </style>
