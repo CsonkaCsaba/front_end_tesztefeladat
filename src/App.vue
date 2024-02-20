@@ -2,8 +2,8 @@
 
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
-const { users } = storeToRefs(UserStore())
-const { orderByid, getInitials,  } = UserStore()
+const { users, userIds  } = storeToRefs(UserStore())
+const { orderByid, getInitials, selectAll } = UserStore()
 orderByid()
 getInitials()
 
@@ -60,15 +60,26 @@ getInitials()
           </div>
       </div>
     </div> -->
-
+<div class="main">
+  <div class="d-flex topbar">
+    <div class="flex-fill">
+     <input type="checkbox" class="type" @click="selectAll" v-model="allSelected"> Users
+    </div>
+    <div  class="flex-fill">
+      <p>Permission</p>
+    </div>
+  </div>
 <ul id="lista">
-  <li v-for="user in users[0]" :key="user" >
+  <li v-for="user in users[0]" :key="user" id="list">
       <div class="d-inline-flex">
-        <div>
-          <p class="initial">{{ user.initial }}</p> 
+        <div class="checkbox">
+          <input type="checkbox" v-model="userIds" value="{{ user.id }}">
+        </div>
+        <div class="initial">
+          <p>{{ user.initial }}</p> 
         </div>
         <div class="username">
-          <p >{{ user.name }}</p>
+          <p>{{ user.name }}</p>
           <p>{{ user.email }}</p>
         </div>
       
@@ -76,6 +87,7 @@ getInitials()
       </div>
   </li>
 </ul>
+</div>
 
       <!-- <div class="d-flex p-2 initial" v-for="user in users[0]">
         <div>
@@ -152,9 +164,19 @@ getInitials()
 </template>
 
 <style scoped lang="sass">
+$colors: #31F1AC,#1C40A3, #DE40A3
+// $color2: #1C40A3
+// $color3: #DE40A3
+$repeat: 20
+
+@for $i from 1 through $repeat
+  .initial
+    p:nth-child(#{length($colors)}n+#{$i})
+    background: nth($colors, random(length($colors)))
+    
 html, body
   font-family: "Poppins", sans-serif
-  font-weight: 400
+  font-weight: 300
   font-style: normal
   
 .navbarlist
@@ -180,12 +202,12 @@ html, body
   background-color: #e9eff2
   border: none
 
-.v-main
+.main
+  font-family: "Poppins", sans-serif 
+  font-weight: 400 
+  font-style: light 
+  margin: 15px
   background-color: white
-  p
-    color: grey
-  ul
-      list-style-type: none
 
 .bar
   border: none !important
@@ -193,14 +215,21 @@ html, body
 .v-toolbar__content
   border: none !important
 .initial
-  background-color: black
   color: white
   margin-right: 16px
-  padding: 25px
-  border: 1px solid
+  height: 58px
+  width: 58px
   border-radius: 50%
-  align-items: center
-  text-align: center
+  p
+   margin: 10%
+   font-size: 25px
+   font-weight: 300
+   font-style: normal
+   text-align: center
+   padding: 6px
+   
+  
+
 
 #lista
   list-style-type: none
@@ -212,11 +241,42 @@ html, body
     color: grey
     padding: 10px
     margin: 10px
-    // p:nth-child(1)
-    //   background-color: black
+
 .username
   align-items: left
   text-align: left
-  margin-top: 15px
+  margin-top: 10px
+  p:nth-child(1)
+    color: black
+    font-size: 20px
+    font-weight: 500 
+  p:nth-child(2)
+    color: #D9D9D9
+    font-size: 16px
+    font-weight: 400 
+
+
+input[type=checkbox]
+  margin: 25px
+  width: 24px
+  height: 24px
+ 
+// .style-one
+//   background-color: $color1
+//   @extend.initial
+// .style-two
+//   background-color: $color2
+//   @extend.initial
+// .style-three
+//   background-color: $color3
+//   @extend.initial
+
+.topbar
+  width: 1000px
+  height:auto
+  margin-left: 33px
+  color: grey
+  font-size: 20px
+  font-weight: 500 
 
 </style>

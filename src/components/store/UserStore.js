@@ -17,6 +17,9 @@ export const UserStore = defineStore("UserStore",{
 
         modalElements: [
         ],
+        selected: [],
+        allSelected: false,
+        userIds: [],
         modalStatus: false,
         baseUrl: window.location.origin,
         edit_id: null,
@@ -56,6 +59,17 @@ export const UserStore = defineStore("UserStore",{
                 element.initial = ini[index].initial
             })
         },
+        selectAll() {
+            console.log('selected')
+            this.userIds = [];
+
+            if (!this.allSelected) {
+                for (user in this.users) {
+                    this.userIds.push(this.users[user].id);
+                }
+            }
+        }
+   
         
        
       
@@ -274,8 +288,7 @@ export const UserStore = defineStore("UserStore",{
 
     },
      methods:{
-      
-   
+       
      },
      mounted:{
         
