@@ -14,11 +14,12 @@ export const UserStore = defineStore("UserStore",{
         ],
         usersWithInitials:[
         ],
-
         modalElements: [
         ],
         selected: [],
+        checked : false,
         allSelected: false,
+        sumSelected : ref(0),
         userIds: [],
         modalStatus: false,
         baseUrl: window.location.origin,
@@ -59,15 +60,34 @@ export const UserStore = defineStore("UserStore",{
                 element.initial = ini[index].initial
             })
         },
-        selectAll() {
-            console.log('selected')
-            this.userIds = [];
-
-            if (!this.allSelected) {
-                for (user in this.users) {
-                    this.userIds.push(this.users[user].id);
-                }
+        applyStyle(value){
+            if(value == 'admin'){
+                return "applyAdminStyle";
             }
+            if(value == 'agent'){
+                return "applyAgentStyle";
+            }
+        },
+        selectAll() {
+            console.log('selectedAll')
+            this.userIds = [];
+            this.allSelectedUsers = !this.allSelectedUsers
+            if(this.allSelectedUsers === true){
+                this.checked = true
+                console.log(this.checked)
+            }else{
+                this.checked = false
+                console.log(this.checked)
+            }
+            
+            // if (!this.allSelected) {
+            //     for (user in this.users) {
+            //         this.userIds.push(this.users[user].id);
+            //     }
+            // }
+        },
+        selectedId(id){
+            console.log(id)
         }
    
         

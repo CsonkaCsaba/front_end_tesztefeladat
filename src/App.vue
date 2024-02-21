@@ -2,8 +2,8 @@
 
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
-const { users, userIds  } = storeToRefs(UserStore())
-const { orderByid, getInitials, selectAll } = UserStore()
+const { users, userIds, checked  } = storeToRefs(UserStore())
+const { orderByid, getInitials, selectAll, applyStyle, selectedId,  } = UserStore()
 orderByid()
 getInitials()
 
@@ -63,27 +63,32 @@ getInitials()
 <div class="main">
   <div class="d-flex topbar">
     <div class="flex-fill">
-     <input type="checkbox" class="type" @click="selectAll" v-model="allSelected"> Users
+     <input type="checkbox" class="type" :v-model="checked" @click="selectAll"> Users {{ checked }}
     </div>
-    <div  class="flex-fill">
+    <div  class="flex-fill mt-8 ml-8">
       <p>Permission</p>
     </div>
   </div>
 <ul id="lista">
-  <li v-for="user in users[0]" :key="user" id="list">
-      <div class="d-inline-flex">
+  <li v-for="user in users[0]" :key="user" class="list">
+      <div class="d-flex flex-nowrap align-items-center">
         <div class="checkbox">
-          <input type="checkbox" v-model="userIds" value="{{ user.id }}">
+          <input type="checkbox" :value="user.id" :v-model="checked" @click="selectedId(user.id)"> {{ checked }}
         </div>
-        <div class="initial">
+        <div class="initial w-20">
           <p>{{ user.initial }}</p> 
         </div>
-        <div class="username">
+        <div class="username flex-grow-1">
           <p>{{ user.name }}</p>
           <p>{{ user.email }}</p>
         </div>
-      
-  
+        <div class="permission">
+          <p :class="applyStyle(user.permission)">{{ user.permission }}</p>
+      </div>
+      <div class="buttons flex-fill">
+        <button type="button" class="btn btn-outline-secondary btn-lg m-4"><i class="bi bi-pencil"></i></button>
+        <button type="button" class="btn btn-outline-secondary btn-lg"><i class="bi bi-trash"></i></button>
+      </div>
       </div>
   </li>
 </ul>
@@ -206,8 +211,10 @@ html, body
   font-family: "Poppins", sans-serif 
   font-weight: 400 
   font-style: light 
-  margin: 15px
+  margin-left: 450px
   background-color: white
+  width: 100%
+  height: auto
 
 .bar
   border: none !important
@@ -228,12 +235,9 @@ html, body
    text-align: center
    padding: 6px
    
-  
-
-
 #lista
   list-style-type: none
-  width: 1000px
+  width: 100%
   height:auto
   margin: 10px
   li
@@ -246,6 +250,7 @@ html, body
   align-items: left
   text-align: left
   margin-top: 10px
+  width: 300px
   p:nth-child(1)
     color: black
     font-size: 20px
@@ -270,13 +275,53 @@ input[type=checkbox]
 // .style-three
 //   background-color: $color3
 //   @extend.initial
-
+.style-one
+  color:red
 .topbar
   width: 1000px
   height:auto
-  margin-left: 33px
+  margin-left: 62px
   color: grey
   font-size: 20px
   font-weight: 500 
+
+.permission
+  width: 300px
+  padding: 15px 10px 10px 50px
+
+.buttons
+    width: 300px
+    padding: 15px 10px 10px 50px
+    align-items: right
+    text-align: right
+    opacity: 0
+ 
+.applyAdminStyle
+  color:#9380be
+  background-color: #efe2fe
+  padding: 5px
+  margin: 0 25px 0 25px
+  width: 100px
+  text-align: center
+  border-radius: 10%
+  &:first-letter 
+    text-transform: uppercase
+
+.applyAgentStyle
+  color:#7265aa
+  background-color: #c8e7f9
+  padding: 5px
+  margin: 0 25px 0 25px
+  text-align: center
+  width: 100px
+  border-radius: 10%
+  &:first-letter 
+    text-transform: uppercase
+.list
+ background-color: white
+ &:hover
+  background-color: #f7fafc
+  .buttons
+    opacity: 1
 
 </style>
