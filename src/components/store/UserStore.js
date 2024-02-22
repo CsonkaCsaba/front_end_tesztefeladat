@@ -4,7 +4,8 @@ import {ref} from 'vue'
 import jsonData from './users.json';
 
 let userData = jsonData;
-let ini = []
+let ini = [];
+let listArray = [];
 export const UserStore = defineStore("UserStore",{
     state: () => {
       return {
@@ -19,7 +20,7 @@ export const UserStore = defineStore("UserStore",{
         selected: [],
         checked : false,
         allSelected: false,
-        sumSelected : ref(0),
+        showSumSelected: false,
         userIds: [],
         modalStatus: false,
         baseUrl: window.location.origin,
@@ -69,16 +70,72 @@ export const UserStore = defineStore("UserStore",{
             }
         },
         selectAll() {
-            console.log('selectedAll')
-            this.userIds = [];
-            this.allSelectedUsers = !this.allSelectedUsers
-            if(this.allSelectedUsers === true){
-                this.checked = true
-                console.log(this.checked)
-            }else{
-                this.checked = false
-                console.log(this.checked)
-            }
+
+            let allSelect = document.querySelector('.selectAll input'),
+                inputs = document.querySelectorAll('.input_field input');
+
+            inputs.forEach(input => {
+                if(allSelect.checked){
+                    input.checked = true
+                    input.classList.add("checked")
+                    this.showSumSelected = true
+                    listArray.push(input.value)
+                }
+                else{
+                    input.checked = false
+                    input.classList.remove("checked")
+                    this.showSumSelected = false
+                    listArray = listArray.filter(val => val !== input.value)
+                }
+            })
+            this.selectedCount()
+            
+            
+            
+                    // if(input.checked){
+                    //     listArray.push(input.value)
+                    // }
+                    // else{
+                    //     listArray = listArray.filter(val => val !== input.value)
+                    // }
+            
+            //         let newUniqueArr = [...new Set(listArray)] // Set always contains unique values. It is an ES6 methods.
+            //         skills.innerHTML = skillText + newUniqueArr.join(', ')
+            //     })
+            
+            //     input.addEventListener('click', ()=> {
+            //         input.classList.toggle("checked")
+            //         var checked = document.querySelectorAll('.checked')
+            //         quantity.innerHTML = quantityText + checked.length
+            
+            
+            //         if(input.checked){
+            //             listArray.push(input.value)
+            //         }
+            //         else{
+            //             listArray = listArray.filter(val => val !== input.value)
+            //             allSelect.checked = false
+            //         }
+            //         let newUniqueArr = [...new Set(listArray)] // Set always contains unique values. It is an ES6 methods.
+            //         skills.innerHTML = skillText + newUniqueArr.join(', ')
+            //     })
+            // })
+
+            // if(allSelect.checked){
+                
+                // inputs.checked = true
+                // inputs.classList.add("checked")
+            // }
+            // console.log('selectedAll')
+            // this.userIds = [];
+            // this.allSelectedUsers = !this.allSelectedUsers
+            // if(this.allSelectedUsers === true){
+            //     this.checked = true
+            //     console.log(this.checked)
+            // }else{
+            //     this.checked = false
+            //     console.log(this.checked)
+            // }
             
             // if (!this.allSelected) {
             //     for (user in this.users) {
@@ -87,8 +144,23 @@ export const UserStore = defineStore("UserStore",{
             // }
         },
         selectedId(id){
+
             console.log(id)
+            let inputs = document.querySelectorAll('.input_field input');
+
+            this.selectedCount()
+        },
+        selectedCount(){
+            let checked = document.querySelectorAll('.checked'),
+                quantity = document.querySelector('.usersSelected')
+
+            if(checked.length > 0){
+                quantity.innerHTML = checked.length+" users selected"
+            } else {
+                this.showSumSelected = false
+            }
         }
+
    
         
        
@@ -314,7 +386,7 @@ export const UserStore = defineStore("UserStore",{
         
      },
      computed:{
-
+        
       }
 
 })

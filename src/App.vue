@@ -2,8 +2,8 @@
 
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
-const { users, userIds, checked  } = storeToRefs(UserStore())
-const { orderByid, getInitials, selectAll, applyStyle, selectedId,  } = UserStore()
+const { users, userIds, checked, showSumSelected} = storeToRefs(UserStore())
+const { orderByid, getInitials, selectAll, applyStyle, selectedId, } = UserStore()
 orderByid()
 getInitials()
 
@@ -61,19 +61,22 @@ getInitials()
       </div>
     </div> -->
 <div class="main">
-  <div class="d-flex topbar">
-    <div class="flex-fill">
-     <input type="checkbox" class="type" :v-model="checked" @click="selectAll"> Users {{ checked }}
-    </div>
-    <div  class="flex-fill mt-8 ml-8">
-      <p>Permission</p>
-    </div>
+  <div class="d-inline-flex mt-6">
+      <p class="usersSelected" v-show="showSumSelected"></p>
+  </div>
+  <div class="d-flex topbar">  
+      <div class="flex-fill selectAll">
+      <input type="checkbox" class="type" @click="selectAll"> Users
+      </div>
+      <div  class="flex-fill mt-8 ml-8">
+        <p>Permission</p>
+      </div>
   </div>
 <ul id="lista">
   <li v-for="user in users[0]" :key="user" class="list">
       <div class="d-flex flex-nowrap align-items-center">
-        <div class="checkbox">
-          <input type="checkbox" :value="user.id" :v-model="checked" @click="selectedId(user.id)"> {{ checked }}
+        <div class="checkbox input_field">
+          <input type="checkbox" :value="user.id" @click="selectedId(user.id)">
         </div>
         <div class="initial w-20">
           <p>{{ user.initial }}</p> 
@@ -284,6 +287,14 @@ input[type=checkbox]
   color: grey
   font-size: 20px
   font-weight: 500 
+
+.usersSelected
+  margin-left: 138px
+  color: black
+  font-size: 20px
+  font-weight: 500 
+
+
 
 .permission
   width: 300px
