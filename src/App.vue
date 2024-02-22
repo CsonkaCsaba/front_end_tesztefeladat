@@ -2,8 +2,8 @@
 
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
-const { users, userIds, checked, showSumSelected} = storeToRefs(UserStore())
-const { orderByid, getInitials, selectAll, applyStyle, selectedId, } = UserStore()
+const { users, userIds, checked, showSumSelected, addNewUser, disableBtn} = storeToRefs(UserStore())
+const { orderByid, getInitials, selectAll, applyStyle, selectedId, addNewUserBtn, checkInput} = UserStore()
 orderByid()
 getInitials()
 
@@ -61,8 +61,13 @@ getInitials()
       </div>
     </div> -->
 <div class="main">
-  <div class="d-inline-flex mt-6">
-      <p class="usersSelected" v-show="showSumSelected"></p>
+  <div class="d-flex mt-6">
+      <div class="flex-fill">
+        <p class="usersSelected" v-show="showSumSelected"></p>
+      </div>
+      <div class="flex-fill">
+        <button type="button" class="btn btn-primary float-end mr-8 p-6 addNewUserBtn" @click="addNewUserBtn" :disabled="disableBtn == 1"><i class="bi bi-plus"></i>Add New user</button>
+      </div>
   </div>
   <div class="d-flex topbar">  
       <div class="flex-fill selectAll">
@@ -72,11 +77,39 @@ getInitials()
         <p>Permission</p>
       </div>
   </div>
+  <div class="addNewUserForm p-2" v-if="addNewUser"> 
+    <form class="d-inline-flex ml-8" name="Form">
+    <div class="m-2">
+        <label for="name" class="p-1 col text-end">Name</label>
+        <input id="nameInput" type="text" class="form-control" required placeholder="Enter Name" name="nameInput" v-on:keyup="checkInput"/>
+      </div>
+    <div class="m-2">
+        <label for="email" class="p-1 col text-end">Email</label>
+        <input id="email" type="email" class="form-control" required placeholder="Enter Email" name="emailInput" v-on:keyup="checkInput"/>
+    </div>
+    <div class="m-2">
+        <label for="permission" class="p-1 col text-end">Permission</label>
+        <select class="form-select" id="permission" disabled>
+        <option disabled value="">Please select one</option>
+        <option>Agent</option>
+        <option>Admin</option>
+      </select>
+    </div>
+      <div class="p-4 mt-3">
+        <button type="button" class="btn btn-primary m-2 addNewUserBtn" @click="">Save</button>
+        <button type="button" class="btn btn-primary m-2 cancelBtn" @click="addNewUser = false">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  
+  
+
 <ul id="lista">
   <li v-for="user in users[0]" :key="user" class="list">
       <div class="d-flex flex-nowrap align-items-center">
         <div class="checkbox input_field">
-          <input type="checkbox" :value="user.id" @click="selectedId(user.id)">
+          <input type="checkbox" @click="selectedId">
         </div>
         <div class="initial w-20">
           <p>{{ user.initial }}</p> 
@@ -334,5 +367,26 @@ input[type=checkbox]
   background-color: #f7fafc
   .buttons
     opacity: 1
+.addNewUserBtn
+  color: white
+  background-color: #1cb0d3
+  border: none
+  font-weight: 300
+  font-style: normal
+.addNewUserForm
+  background-color: #f7fafc 
+  @extend .topbar
+  input
+    placeholder
+      color: grey
+.cancelBtn
+  background-color: #e2e8eb
+  color: grey
+  border: none
+
+
+
+  
+
 
 </style>

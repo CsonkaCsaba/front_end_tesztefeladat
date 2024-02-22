@@ -5,7 +5,7 @@ import jsonData from './users.json';
 
 let userData = jsonData;
 let ini = [];
-let listArray = [];
+
 export const UserStore = defineStore("UserStore",{
     state: () => {
       return {
@@ -21,15 +21,13 @@ export const UserStore = defineStore("UserStore",{
         checked : false,
         allSelected: false,
         showSumSelected: false,
+        addNewUser: false,
+        disableBtn: 0,
         userIds: [],
         modalStatus: false,
-        baseUrl: window.location.origin,
         edit_id: null,
-        file: '',
-        oldPhotoName: null,
         noFile: false,
         message : "",
-        photo: {}
         }
     },
     getters: {
@@ -79,87 +77,68 @@ export const UserStore = defineStore("UserStore",{
                     input.checked = true
                     input.classList.add("checked")
                     this.showSumSelected = true
-                    listArray.push(input.value)
+
                 }
                 else{
                     input.checked = false
                     input.classList.remove("checked")
                     this.showSumSelected = false
-                    listArray = listArray.filter(val => val !== input.value)
+
                 }
             })
             this.selectedCount()
             
-            
-            
-                    // if(input.checked){
-                    //     listArray.push(input.value)
-                    // }
-                    // else{
-                    //     listArray = listArray.filter(val => val !== input.value)
-                    // }
-            
-            //         let newUniqueArr = [...new Set(listArray)] // Set always contains unique values. It is an ES6 methods.
-            //         skills.innerHTML = skillText + newUniqueArr.join(', ')
-            //     })
-            
-            //     input.addEventListener('click', ()=> {
-            //         input.classList.toggle("checked")
-            //         var checked = document.querySelectorAll('.checked')
-            //         quantity.innerHTML = quantityText + checked.length
-            
-            
-            //         if(input.checked){
-            //             listArray.push(input.value)
-            //         }
-            //         else{
-            //             listArray = listArray.filter(val => val !== input.value)
-            //             allSelect.checked = false
-            //         }
-            //         let newUniqueArr = [...new Set(listArray)] // Set always contains unique values. It is an ES6 methods.
-            //         skills.innerHTML = skillText + newUniqueArr.join(', ')
-            //     })
-            // })
+        }, selectedId(){
 
-            // if(allSelect.checked){
-                
-                // inputs.checked = true
-                // inputs.classList.add("checked")
-            // }
-            // console.log('selectedAll')
-            // this.userIds = [];
-            // this.allSelectedUsers = !this.allSelectedUsers
-            // if(this.allSelectedUsers === true){
-            //     this.checked = true
-            //     console.log(this.checked)
-            // }else{
-            //     this.checked = false
-            //     console.log(this.checked)
-            // }
-            
-            // if (!this.allSelected) {
-            //     for (user in this.users) {
-            //         this.userIds.push(this.users[user].id);
-            //     }
-            // }
-        },
-        selectedId(id){
-
-            console.log(id)
             let inputs = document.querySelectorAll('.input_field input');
+            inputs.forEach(input => {
+                if(input.checked){
+                    input.classList.add("checked")
 
+                }
+                else{
+                    input.checked = false
+                    input.classList.remove("checked")
+                    this.showSumSelected = false
+                }
+            })
+            
             this.selectedCount()
         },
+
         selectedCount(){
             let checked = document.querySelectorAll('.checked'),
-                quantity = document.querySelector('.usersSelected')
+                quantity = document.querySelector('.usersSelected');
+            console.log(checked.length)
 
             if(checked.length > 0){
+                this.showSumSelected = true
                 quantity.innerHTML = checked.length+" users selected"
             } else {
                 this.showSumSelected = false
             }
+        },
+        addNewUserBtn(){
+            this.addNewUser = true
+            this.disableBtn = 1
+            console.log('clicked')
+           
+
+        },
+        checkInput(){
+            
+            let inputName = document.forms["Form"]["nameInput"].value,
+                inputEmail = document.forms["Form"]["emailInput"].value;
+
+            if(inputName != "" && inputEmail !=""){
+                console.log(inputName)
+                console.log(inputEmail)
+                this.disableBtn = 1
+            } else{
+                this.disableBtn = 0
+            }
         }
+       
 
    
         
