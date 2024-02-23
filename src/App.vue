@@ -3,7 +3,7 @@
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
 const { users, userIds, checked, showSumSelected, addNewUser, disableBtn} = storeToRefs(UserStore())
-const { orderByid, getInitials, selectAll, applyStyle, selectedId, addNewUserBtn, checkInput} = UserStore()
+const { orderByid, getInitials, selectAll, applyStyle, selectedId, addNewUserBtn, checkInput, saveNewUser} = UserStore()
 orderByid()
 getInitials()
 
@@ -66,7 +66,7 @@ getInitials()
         <p class="usersSelected" v-show="showSumSelected"></p>
       </div>
       <div class="flex-fill">
-        <button type="button" class="btn btn-primary float-end mr-8 p-6 addNewUserBtn" @click="addNewUserBtn" :disabled="disableBtn == 1"><i class="bi bi-plus"></i>Add New user</button>
+        <button type="button" class="btn btn-primary float-end mr-8 p-6 addNewUserBtn" @click="addNewUserBtn" ><i class="bi bi-plus"></i>Add New user</button>
       </div>
   </div>
   <div class="d-flex topbar">  
@@ -89,14 +89,14 @@ getInitials()
     </div>
     <div class="m-2">
         <label for="permission" class="p-1 col text-end">Permission</label>
-        <select class="form-select" id="permission" disabled>
-        <option disabled value="">Please select one</option>
+        <select class="form-select" id="permission" disabled name="permissionInput">
+        <option value="">Please select one</option>
         <option>Agent</option>
         <option>Admin</option>
       </select>
     </div>
       <div class="p-4 mt-3">
-        <button type="button" class="btn btn-primary m-2 addNewUserBtn" @click="">Save</button>
+        <button type="button" class="btn btn-primary m-2 addNewUserBtn" @click="saveNewUser" :disabled="disableBtn == 1">Add</button>
         <button type="button" class="btn btn-primary m-2 cancelBtn" @click="addNewUser = false">Cancel</button>
       </div>
     </form>

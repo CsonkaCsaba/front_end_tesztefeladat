@@ -3,6 +3,7 @@ import axios from 'axios'
 import {ref} from 'vue'
 import jsonData from './users.json';
 
+
 let userData = jsonData;
 let ini = [];
 
@@ -130,14 +131,37 @@ export const UserStore = defineStore("UserStore",{
             let inputName = document.forms["Form"]["nameInput"].value,
                 inputEmail = document.forms["Form"]["emailInput"].value;
 
-            if(inputName != "" && inputEmail !=""){
-                console.log(inputName)
-                console.log(inputEmail)
-                this.disableBtn = 1
-            } else{
+            if(inputName.length != 0 && inputEmail.length != 0){
                 this.disableBtn = 0
             }
-        }
+        },
+        saveNewUser(){
+
+            let inputName = document.forms["Form"]["nameInput"].value,
+                inputEmail = document.forms["Form"]["emailInput"].value,
+                inputPermission = document.forms["Form"]["permissionInput"].value;
+            
+            // let data = {
+            //     name : inputName,
+            //     email : inputEmail,
+            //     permission : inputPermission
+            // }
+            //let dataJson = JSON.parse(data)
+            //console.log(typeof(dataJson))
+            //console.log(typeof(data))
+
+                axios.post('src/components/store/users.json', { answer: 42 }).then(function (response) {
+                    console.log(response);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+                
+                // userData.push({
+                // name:inputName,
+                // email:inputEmail,
+                // permission: inputPermission
+                // })
        
 
    
@@ -356,8 +380,11 @@ export const UserStore = defineStore("UserStore",{
             
     //         return modalElements;
     //     }
-
+    }
+    
     },
+
+
      methods:{
        
      },
