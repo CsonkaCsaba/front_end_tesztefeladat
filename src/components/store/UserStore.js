@@ -7,6 +7,7 @@ import jsonData from './users.json';
 let userData = jsonData;
 let ini = [];
 
+
 export const UserStore = defineStore("UserStore",{
     state: () => {
       return {
@@ -24,7 +25,7 @@ export const UserStore = defineStore("UserStore",{
         showSumSelected: false,
         addNewUser: false,
         disableBtn: 0,
-        userIds: [],
+        userIds: 6,
         modalStatus: false,
         edit_id: null,
         noFile: false,
@@ -54,7 +55,6 @@ export const UserStore = defineStore("UserStore",{
                 index +=1
                 this.initials.push(initial);
                 ini.push(initial);
-                
             })
             this.users[0].forEach(function(element, index) {
                 element.initial = ini[index].initial
@@ -110,7 +110,6 @@ export const UserStore = defineStore("UserStore",{
         selectedCount(){
             let checked = document.querySelectorAll('.checked'),
                 quantity = document.querySelector('.usersSelected');
-            console.log(checked.length)
 
             if(checked.length > 0){
                 this.showSumSelected = true
@@ -122,7 +121,6 @@ export const UserStore = defineStore("UserStore",{
         addNewUserBtn(){
             this.addNewUser = true
             this.disableBtn = 1
-            console.log('clicked')
            
 
         },
@@ -136,38 +134,29 @@ export const UserStore = defineStore("UserStore",{
             }
         },
         saveNewUser(){
-
             let inputName = document.forms["Form"]["nameInput"].value,
                 inputEmail = document.forms["Form"]["emailInput"].value,
                 inputPermission = document.forms["Form"]["permissionInput"].value;
-            
-            // let data = {
-            //     name : inputName,
-            //     email : inputEmail,
-            //     permission : inputPermission
-            // }
-            //let dataJson = JSON.parse(data)
-            //console.log(typeof(dataJson))
-            //console.log(typeof(data))
 
-                axios.post('src/components/store/users.json', { answer: 42 }).then(function (response) {
-                    console.log(response);
-                  })
-                  .catch(function (error) {
-                    console.log(error);
-                  });
-                
-                // userData.push({
-                // name:inputName,
-                // email:inputEmail,
-                // permission: inputPermission
-                // })
-       
+            let lastId = this.userIds += 1
+            let data = {
+                id: lastId,
+                name : inputName,
+                email : inputEmail,
+                permission : inputPermission
+            }
+            jsonData.push(data)
+            let lastElement = jsonData[jsonData.length - 1];
+            let lastInitial = lastElement.name.trim().split(' ');
+            let lastNameFirstPartChar = lastInitial[0].charAt(0).toUpperCase()
+            let lastNamesSecoundPartChar = lastInitial[1].charAt(0).toUpperCase()
 
-   
-        
-       
-      
+            jsonData.forEach(function(element) {
+                if(element.id == lastId){
+
+                    element.initial = lastNameFirstPartChar + lastNamesSecoundPartChar
+                }
+            })
 
         // async fetchUsers(){
         //     let users = [];
@@ -380,6 +369,16 @@ export const UserStore = defineStore("UserStore",{
             
     //         return modalElements;
     //     }
+    }, editUser(id){
+        console.log(id)
+        let listId = id
+        console.log(listId)
+        let form = document.querySelector('#userForm')
+        let element = document.getElementById(listId)
+        console.log(element)
+        //element.appendChild(form);
+
+
     }
     
     },

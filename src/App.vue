@@ -3,7 +3,7 @@
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
 const { users, userIds, checked, showSumSelected, addNewUser, disableBtn} = storeToRefs(UserStore())
-const { orderByid, getInitials, selectAll, applyStyle, selectedId, addNewUserBtn, checkInput, saveNewUser} = UserStore()
+const { orderByid, getInitials, selectAll, applyStyle, selectedId, addNewUserBtn, checkInput, saveNewUser, editUser} = UserStore()
 orderByid()
 getInitials()
 
@@ -66,7 +66,7 @@ getInitials()
         <p class="usersSelected" v-show="showSumSelected"></p>
       </div>
       <div class="flex-fill">
-        <button type="button" class="btn btn-primary float-end mr-8 p-6 addNewUserBtn" @click="addNewUserBtn" ><i class="bi bi-plus"></i>Add New user</button>
+        <button type="button" class="btn btn-primary float-end mr-8 p-6 addNewUserBtn" @click="addNewUserBtn"><i class="bi bi-plus"></i>Add New user</button>
       </div>
   </div>
   <div class="d-flex topbar">  
@@ -77,7 +77,7 @@ getInitials()
         <p>Permission</p>
       </div>
   </div>
-  <div class="addNewUserForm p-2" v-if="addNewUser"> 
+  <div class="addNewUserForm p-2" v-if="addNewUser" id="userForm"> 
     <form class="d-inline-flex ml-8" name="Form">
     <div class="m-2">
         <label for="name" class="p-1 col text-end">Name</label>
@@ -90,9 +90,8 @@ getInitials()
     <div class="m-2">
         <label for="permission" class="p-1 col text-end">Permission</label>
         <select class="form-select" id="permission" disabled name="permissionInput">
-        <option value="">Please select one</option>
-        <option>Agent</option>
-        <option>Admin</option>
+        <option value="agent">Agent</option>
+        <option value="admin">Admin</option>
       </select>
     </div>
       <div class="p-4 mt-3">
@@ -106,7 +105,7 @@ getInitials()
   
 
 <ul id="lista">
-  <li v-for="user in users[0]" :key="user" class="list">
+  <li v-for="user in users[0]" :key="user" id={{user.id}}>
       <div class="d-flex flex-nowrap align-items-center">
         <div class="checkbox input_field">
           <input type="checkbox" @click="selectedId">
@@ -122,7 +121,7 @@ getInitials()
           <p :class="applyStyle(user.permission)">{{ user.permission }}</p>
       </div>
       <div class="buttons flex-fill">
-        <button type="button" class="btn btn-outline-secondary btn-lg m-4"><i class="bi bi-pencil"></i></button>
+        <button type="button" class="btn btn-outline-secondary btn-lg m-4" @click="editUser(user.id)"><i class="bi bi-pencil"></i></button>
         <button type="button" class="btn btn-outline-secondary btn-lg"><i class="bi bi-trash"></i></button>
       </div>
       </div>
@@ -205,15 +204,10 @@ getInitials()
 </template>
 
 <style scoped lang="sass">
-$colors: #31F1AC,#1C40A3, #DE40A3
-// $color2: #1C40A3
-// $color3: #DE40A3
-$repeat: 20
+$color1: #DE40A3
+$color2: #1C40A3
+$color3: #31F1AC
 
-@for $i from 1 through $repeat
-  .initial
-    p:nth-child(#{length($colors)}n+#{$i})
-    background: nth($colors, random(length($colors)))
     
 html, body
   font-family: "Poppins", sans-serif
@@ -263,6 +257,7 @@ html, body
   height: 58px
   width: 58px
   border-radius: 50%
+  background-color: $color1
   p
    margin: 10%
    font-size: 25px
@@ -277,11 +272,21 @@ html, body
   height:auto
   margin: 10px
   li
+    background-color: white
     border: none
     color: grey
     padding: 10px
     margin: 10px
-
+    &:hover
+      background-color: #f7fafc
+      .buttons
+        opacity: 1
+    &:nth-child(even)
+      .initial 
+        background-color: $color2
+    &:nth-child(3n+3)
+      .initial
+        background-color: $color3
 .username
   align-items: left
   text-align: left
@@ -311,8 +316,7 @@ input[type=checkbox]
 // .style-three
 //   background-color: $color3
 //   @extend.initial
-.style-one
-  color:red
+
 .topbar
   width: 1000px
   height:auto
@@ -361,12 +365,7 @@ input[type=checkbox]
   border-radius: 10%
   &:first-letter 
     text-transform: uppercase
-.list
- background-color: white
- &:hover
-  background-color: #f7fafc
-  .buttons
-    opacity: 1
+
 .addNewUserBtn
   color: white
   background-color: #1cb0d3
