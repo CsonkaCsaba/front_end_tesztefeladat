@@ -369,14 +369,13 @@ export const UserStore = defineStore("UserStore",{
             
     //         return modalElements;
     //     }
-    }, editUser(id){
-        console.log(id)
-        let listId = id
-        console.log(listId)
-        let form = document.querySelector('#userForm')
-        let element = document.getElementById(listId)
+    }, editUser(name){
+        console.log(name)
+        let form = document.getElementsByName("Form");
+        let element = document.getElementById(name)
+        console.log(form)
         console.log(element)
-        //element.appendChild(form);
+        element.insertAdjacentHTML('beforeend', form);
 
 
     }

@@ -105,7 +105,7 @@ getInitials()
   
 
 <ul id="lista">
-  <li v-for="user in users[0]" :key="user" id={{user.id}}>
+  <li v-for="user in users[0]" :key="user.id" :id="user.name">
       <div class="d-flex flex-nowrap align-items-center">
         <div class="checkbox input_field">
           <input type="checkbox" @click="selectedId">
@@ -121,7 +121,7 @@ getInitials()
           <p :class="applyStyle(user.permission)">{{ user.permission }}</p>
       </div>
       <div class="buttons flex-fill">
-        <button type="button" class="btn btn-outline-secondary btn-lg m-4" @click="editUser(user.id)"><i class="bi bi-pencil"></i></button>
+        <button type="button" class="btn btn-outline-secondary btn-lg m-4" @click="editUser(user.name)"><i class="bi bi-pencil"></i></button>
         <button type="button" class="btn btn-outline-secondary btn-lg"><i class="bi bi-trash"></i></button>
       </div>
       </div>
