@@ -24,12 +24,16 @@ export const UserStore = defineStore("UserStore",{
         allSelected: false,
         showSumSelected: false,
         addNewUser: false,
-        disableBtn: 0,
+        disableBtn: false,
+        disableBtnAdd: false,
         userIds: 6,
+        editUser: false,
         modalStatus: false,
         edit_id: null,
-        noFile: false,
+        editName: null,
+        editEmail: null,
         message : "",
+        deleteId : null
         }
     },
     getters: {
@@ -58,6 +62,7 @@ export const UserStore = defineStore("UserStore",{
             })
             this.users[0].forEach(function(element, index) {
                 element.initial = ini[index].initial
+                element.editUser = false
             })
         },
         applyStyle(value){
@@ -119,20 +124,43 @@ export const UserStore = defineStore("UserStore",{
             }
         },
         addNewUserBtn(){
+            console.log('clicked')
+            this.disableBtnAdd = true
+            this.disableBtn = true
             this.addNewUser = true
-            this.disableBtn = 1
            
 
         },
-        checkInput(){
-            
-            let inputName = document.forms["Form"]["nameInput"].value,
-                inputEmail = document.forms["Form"]["emailInput"].value;
-
-            if(inputName.length != 0 && inputEmail.length != 0){
-                this.disableBtn = 0
+        checkInputAdd(){
+            if(typeof(document.forms["Form"]["nameInput"] != "undefined")){
+                let inputName = document.forms["Form"]["nameInput"].value,
+                    inputEmail = document.forms["Form"]["emailInput"].value
+                    if((inputName.length != 0 && inputEmail.length != 0) ){
+                        this.disableBtn = false
+                    }
             }
+            
+            if(document.forms["editForm"]["editname"] != "undefined"){
+                let editInputName = document.forms["editForm"]["editname"].value,
+                    editInputEmail = document.forms["editForm"]["editemail"].value;
+                    if(editInputName.length != 0 && editInputEmail.length != 0){
+                        this.disableBtn = false
+                    }
+            }    
+
+            
         },
+        checkInputEdit(){
+            if(document.forms["editForm"]["editname"] != "undefined"){
+                let editInputName = document.forms["editForm"]["editname"].value,
+                    editInputEmail = document.forms["editForm"]["editemail"].value;
+                    if(editInputName.length != 0 && editInputEmail.length != 0){
+                        this.disableBtn = false
+                    }
+            }    
+
+        },
+        
         saveNewUser(){
             let inputName = document.forms["Form"]["nameInput"].value,
                 inputEmail = document.forms["Form"]["emailInput"].value,
@@ -157,232 +185,52 @@ export const UserStore = defineStore("UserStore",{
                     element.initial = lastNameFirstPartChar + lastNamesSecoundPartChar
                 }
             })
+            this.disableBtnAdd = false
+            this.addNewUser = false
 
-        // async fetchUsers(){
-        //     let users = [];
-        //     try {
-        //            await axios.get('./users.json').then(function(response){
-        //             users = response.data;
-        //             console.log(users)
-                   
-        //             });
-        //                 this.users.push(users);
-        //         }
-        //          catch(error){
-        //             console.log(error)
-        //         }
-        // },
-        // async fetchNewsadmin(){
-        //     let news = [];
-        //     try {
-        //            await axios.get('api/hirekadmin').then(function(response){
-        //            news = response.data;
-        //             });
-        //                 this.news.push(news);
-        //         }
-        //          catch(error){
-        //             console.log(error)
-        //         }
-        // },
+    }, editUser(id){
+        this.disableBtn = true;
+        let editData = {
+            editName: this.editName,
+            editEmail: this.editEmail
+          }
+           this.users[0].forEach(function(element) {
+                if(element.id === id){
+                element.name = editData.editName
+                element.email = editData.editEmail
+                element.editUser = false
+            }
+        })
 
-        // deleteNews(id, cim){
-        //     try{
-        //         let answer = confirm("Biztos benne, hogy törölni szeretné a(z) " +cim+" című hírt?");          
-        //         if(answer != false){
-        //         axios.delete('api/hirekadmin/'+id).then(res=>{
-        //             if(res.status == 200){
-        //                 let index = this.news.findIndex(news=>news.id == id);
-        //                 this.news.splice(index, 1)
-        //                 this.modalStatus = true;
-        //                 this.message = "A hír törlése sikeres!";
-        //                 showSwiper +=1
-        //             }
-        //             answer = false;
-                    
-        //             }).catch(console.error)
-        //         }
-        //     }catch(error){
-        //         console.log(error)
-        //     }
+    }, 
+    deleteUser(id, name)  {
+        this.modalStatus = true
+        this.message = name
+        this.deleteId = id
+       
+        },
 
-        // },
-
-        // updateNews(id, cim, leiras, uzletId, kepId){
-        //     try{
-        //         this.id = id;
-        //         this.edit_id = id;
-        //         this.cim = cim;
-        //         this.leiras = leiras;
-        //         this.uzletId = uzletId;
-        //         this.kepId = kepId;
-                
-        //         let form_data ={
-        //         id : this.id,    
-        //         cim : this.cim,
-        //         leiras : this.leiras,
-        //         uzletId: this.uzletId,
-        //         }
-        //         axios.put('api/hirekadmin/'+this.edit_id, form_data).then(res=>{
-        //             this.message = "A hír módosítása sikeres!";
-        //             this.modalStatus = true;
-        //             this.showSwiper +=1;
-        //         }).catch(console.error)
-        //     }catch(error){
-        //         console.log(error)
-        //     }
-        // }, 
-        // onChange(e){
-        //     let file;
-        //     file = e.target.files[0];
-        //     this.file = file;
-
-        // },
-
-        // createNew(cim, leiras, uzletId) {
-
-        //     this.cim = cim;
-        //     this.leiras = leiras;
-        //     this.kepId = 0;
-        //     this.uztletId = uzletId;
-
-        //     const config = {
-        //         headers: {
-        //             'content-type':'multipart/form-data'
-        //         }
-        //     }
-        //     let photoData = new FormData();
-            // this.uzletId = 1;
-            // this.cim = cim;
-            // this.leiras = leiras;
-
+    receiveEmit(){
+            this.modalStatus = false
             
-            // formData.append('cim', this.cim);
-            // formData.append('leiras', this.leiras);
-            // formData.append('id', this.uzletId);
+        },
+    approvedDelete(){
+        this.modalStatus = false
+        if(this.deleteId !== null) {
+            this.users[0].forEach(function(element) {
+                if(element.id === id){
+                element.name = editData.editName
+                element.email = editData.editEmail
+                element.editUser = false
+            }
+        })
 
-            // if(this.file != ""){
-            //     photoData.append('file', this.file);
-            //     axios.post('api/galeria/upload', photoData, config)
-            //     .then((response) => {
-            //         if(response.data.message == "Sikeres feltöltés!"){
-            //             this.kepId = parseInt(response.data.last_insert_id);
-            //             let form_data ={ 
-            //                 cim : cim,
-            //                 leiras : leiras,
-            //                 uzletId : this.uztletId,
-            //                 kepId: this.kepId,
-            //                 }
-            //                 console.log(form_data);
-            //                 axios.post('api/hirekadmin/create',form_data).then(res=>{
-                                //this.message = "A hír módosítása sikeres!";
-                                //this.modalStatus = true;
-                                //this.showSwiper +=1;
-                            // }).catch(console.error)
-                            
-                        //this.uploadSuccessful = true;
-                       //location.reload();
-                       //showSwiper +=1
-                //     } else {
-                //         this.message = response.data.message;
-                //     }
-                // }).catch((error) => {
-                //     console.log(error)
-                //     if(error.response.status === 422){
-                //         this.message = "Csak .jpg, .jpeg, .png kiterjesztésű fotók tölthetők fel!"
-                //     }
-                    //if(error.message == "Request failed with status code 422")
-                    //this.message = "error";        
-    //             });
-    //         } else {
-    //             this.message = "Nem választott ki fájlt a feltöltéshez!";
-    //         }
-
-
-    
-    //         // PostService.createPost(formdata)
-    //         // .then(() => {
-    //         //     console.log('success');
-    //         //         });
-    //         },
-
-    //     uploadPoto(e){
-    //         e.preventDefault();
-    //         const config = {
-    //             headers: {
-    //                 'content-type':'multipart/form-data'
-    //             }
-    //         }
-            
-    //         let data = new FormData();
-    //         if(this.file != ""){
-    //             this.noFile = false;
-    //             this.message = "";
-    //             data.append('file', this.file);
-    //             axios.post('api/galeria/upload', data, config)
-    //             .then((response) => {
-    //                 if(response.data.message == "Sikeres feltöltés!"){
-    //                    //location.reload();
-    //                    showSwiper +=1
-    //                 } else {
-    //                     this.message = response.data.message;
-    //                 }
-    //             }).catch((error) => {
-    //                 console.log(error)
-    //                 if(error.response.status === 422){
-    //                     this.message = "Csak .jpg, .jpeg, .png kiterjesztésű fotók tölthetők fel!"
-    //                 }
-    //                 //if(error.message == "Request failed with status code 422")
-    //                 //this.message = "error";        
-    //             });
-    //         } else {
-    //             this.noFile = true
-    //         }
-            
-    //     },
-
-    //     oldPhotoName(e){
-    //         this.oldPhotoName = e
-    //     },
-        
-    //     updateStatusChange(){
-    //         this.updateSuccessful = false
-    //     }, 
-
-    //     deleteStatusChange(){
-    //         this.deleteSuccessful = false
-    //     },
-    //     uploadStatusChange(){
-    //         this.uploadSuccessful = false
-    //     },
-    //     receiveEmit(){
-    //         this.modalStatus = false
-            
-    //     },
-    //     modalOpen(cim, datum, leiras, kepUtvonal){
-    //         this.modalStatus = true;
-    //         this.modalElements = [
-    //         this.modalCim = cim,
-    //         this.modalDatum = datum,
-    //         this.modalLeiras = leiras,
-    //         this.modalKepUtvonal = kepUtvonal
-    //         ];
-            
-    //         return modalElements;
-    //     }
-    }, editUser(name){
-        console.log(name)
-        let form = document.getElementsByName("Form");
-        let element = document.getElementById(name)
-        console.log(form)
-        console.log(element)
-        element.insertAdjacentHTML('beforeend', form);
-
-
-    }
-    
+            // let index = this.users.find(x=>x.id == this.user.id);
+            // console.log(index)
+            //this.users.splice(index, 1)
+        }
     },
-
-
+    },
      methods:{
        
      },

@@ -2,13 +2,10 @@
 
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
-const { users, userIds, checked, showSumSelected, addNewUser, disableBtn} = storeToRefs(UserStore())
-const { orderByid, getInitials, selectAll, applyStyle, selectedId, addNewUserBtn, checkInput, saveNewUser, editUser} = UserStore()
+const { users, userIds, checked, showSumSelected, addNewUser, disableBtn, disableBtnAdd, editName, editEmail, message, modalStatus, approved } = storeToRefs(UserStore())
+const { orderByid, getInitials, selectAll, applyStyle, selectedId, addNewUserBtn, saveNewUser, editUser, checkInputEdit, checkInputAdd, deleteUser, receiveEmit, approvedDelete} = UserStore()
 orderByid()
 getInitials()
-
-
-
 
 </script>
 
@@ -49,25 +46,15 @@ getInitials()
           </div>
       </div>
     </v-navigation-drawer>
-    <!-- <v-app-bar style="border-radius: -20px !important;" class="bar">
-        <p>fdsfsdfsfdsfsd</p>
-    </v-app-bar> -->
-
-    <!-- <div class="container">
-      <div class="row justify-content-md-center">
-          <div class="col" v-for="user in users[0]" :key="user">
-            <p>{{ user.initial }}</p><p> {{ user.name }}</p>
-          </div>
-      </div>
-    </div> -->
 <div class="main">
   <div class="d-flex mt-6">
-      <div class="flex-fill">
+      <div class="d-flex">
         <p class="usersSelected" v-show="showSumSelected"></p>
+        <button type="button" class="btn deleteBtn ml-6 mb-2" @click="" v-show="showSumSelected"><i class="bi bi-trash"></i>Delete selected users</button>
       </div>
-      <div class="flex-fill">
-        <button type="button" class="btn btn-primary float-end mr-8 p-6 addNewUserBtn" @click="addNewUserBtn"><i class="bi bi-plus"></i>Add New user</button>
-      </div>
+    <div class="flex-fill">
+      <button type="button" class="btn btn-primary float-end mr-8 p-6 addNewUserBtn" @click="addNewUserBtn" :disabled="disableBtnAdd"><i class="bi bi-plus"></i>Add New user</button>
+    </div>
   </div>
   <div class="d-flex topbar">  
       <div class="flex-fill selectAll">
@@ -81,11 +68,11 @@ getInitials()
     <form class="d-inline-flex ml-8" name="Form">
     <div class="m-2">
         <label for="name" class="p-1 col text-end">Name</label>
-        <input id="nameInput" type="text" class="form-control" required placeholder="Enter Name" name="nameInput" v-on:keyup="checkInput"/>
+        <input id="nameInput" type="text" class="form-control" required placeholder="Enter Name" name="nameInput" v-on:keyup="checkInputAdd"/>
       </div>
     <div class="m-2">
         <label for="email" class="p-1 col text-end">Email</label>
-        <input id="email" type="email" class="form-control" required placeholder="Enter Email" name="emailInput" v-on:keyup="checkInput"/>
+        <input id="email" type="email" class="form-control" required placeholder="Enter Email" name="emailInput" v-on:keyup="checkInputAdd"/>
     </div>
     <div class="m-2">
         <label for="permission" class="p-1 col text-end">Permission</label>
@@ -95,8 +82,8 @@ getInitials()
       </select>
     </div>
       <div class="p-4 mt-3">
-        <button type="button" class="btn btn-primary m-2 addNewUserBtn" @click="saveNewUser" :disabled="disableBtn == 1">Add</button>
-        <button type="button" class="btn btn-primary m-2 cancelBtn" @click="addNewUser = false">Cancel</button>
+        <button type="button" class="btn btn-primary m-2 addNewUserBtn" @click="saveNewUser" :disabled="disableBtn">Add</button>
+        <button type="button" class="btn btn-primary m-2 cancelBtn" @click="addNewUser = false; disableBtnAdd = false">Cancel</button>
       </div>
     </form>
   </div>
@@ -105,7 +92,7 @@ getInitials()
   
 
 <ul id="lista">
-  <li v-for="user in users[0]" :key="user.id" :id="user.name">
+  <li v-for="user in users[0]" :key="user.id" :id="user.id">
       <div class="d-flex flex-nowrap align-items-center">
         <div class="checkbox input_field">
           <input type="checkbox" @click="selectedId">
@@ -121,85 +108,38 @@ getInitials()
           <p :class="applyStyle(user.permission)">{{ user.permission }}</p>
       </div>
       <div class="buttons flex-fill">
-        <button type="button" class="btn btn-outline-secondary btn-lg m-4" @click="editUser(user.name)"><i class="bi bi-pencil"></i></button>
-        <button type="button" class="btn btn-outline-secondary btn-lg"><i class="bi bi-trash"></i></button>
+        <button type="button" class="btn btn-outline-secondary btn-lg m-4" @click="user.editUser = true; disableBtnAdd = true; disableBtn = true "><i class="bi bi-pencil"></i></button>
+        <button type="button" class="btn btn-outline-secondary btn-lg" @click="deleteUser(user.id, user.name)"><i class="bi bi-trash"></i></button>
       </div>
       </div>
+
+      <div class="editUserForm p-2" v-show="user.editUser" id="edituserForm"> 
+        <form class="d-inline-flex ml-8" name="editForm"  @submit.prevent="editUser(user.id)">
+        <div class="m-2">
+            <label for="editname" class="p-1 col text-end">Name</label>
+            <input id="editname" type="text" class="form-control" required placeholder="User Full Name" name="editname" v-model="editName" v-on:keyup="checkInputEdit"/>
+          </div>
+        <div class="m-2">
+            <label for="editemail" class="p-1 col text-end">Email</label>
+            <input id="editemail" type="email" class="form-control" required placeholder="user.name@gbd.hu" name="editemail" v-model="editEmail" v-on:keyup="checkInputEdit"/>
+        </div>
+        <div class="m-2">
+          <label for="permission" class="p-1 col text-end">Permission</label>
+            <select class="form-select" id="permission" disabled name="permissionInput">
+            <option value="agent">Agent</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+          <div class="p-4 mt-3">
+            <button type="submit" class="btn btn-primary m-2 addNewUserBtn" :disabled="disableBtn">Save</button>
+            <button type="button" class="btn btn-primary m-2 cancelBtn" @click="user.editUser = false; disableBtnAdd = false">Cancel</button>
+          </div>
+        </form>
+    </div>
   </li>
 </ul>
 </div>
-
-      <!-- <div class="d-flex p-2 initial" v-for="user in users[0]">
-        <div>
-          {{ user.initial }}
-        </div>
-        <div>
-          {{ user.name }}
-        </div>
-        <div>
-          {{ user.email }}
-        </div>
-        <div>
-          {{ user.permission }}
-        </div> -->
-            <!-- <p class="initial">{{ user.name }}{{ user.permission }}
-            {{ user.email }}</p> -->
-            <!-- <p  v-for="item in usersWithInitials[0]">{{ item.name }}</p> -->
-    <!-- </div> -->
-      <!-- <li v-for="item in usersWithInitials[0]">{{ item.name }}
-      </li> -->
-      
-    
-      <!-- <p v-for="(user, index) in users[0]"><strong>{{ user.id }} <br>{{index}}</strong>
-        
-       <p>{{ initial[index].id }}</p>
-      
-      </p>
-      <p v-for="(initial, index) in initials"> {{user.index}}</p>
-      <br>
-      <p v-for="(initial, index) in initials"> {{initial.id }}</p> 
-
-
-     <ul v-for="(user,i) in GetUsers" :key="i">
-                 <li class="fav_item" v-for="(initial,j) in RelatedInitials(user['id'])" :key="j">
-                   {{user['name']}}
-                 </li>
-           </ul> -->
-      <!-- <v-table>
-          <tbody>
-            <tr
-           
-            >
-              <td>{{ user.name }}<br>{{ user.email }}</td>
-            </tr>
-            <tr
-              v-for="initial in initials"
-            >
-              <td>{{ initial}}</td>
-            </tr>
-          </tbody>
-      </v-table> -->
-
-      <!-- <ul>
-        <li v-for="con in concat[0][0]">
-          {{ con.name}}{{ con.name }}
-            <p>{{ con[0][1] }}</p>
-           -->
-          <!-- <li v-for="initial in initials">
-            {{ initial }}
-
-          </li> -->
-          
-<!--           
-        </li>
-      </ul> -->
-      <!-- <ul >
-        <li v-for="(user, i) in users[0]" :key="i"> {{user.name}}</li>
-        <li v-for="(initial) in initials" > {{initial.initial}}</li>
-      </ul> -->
-
- 
-    <!-- </v-main> -->
+<Modal v-model="modalStatus" :message="message" @modalStatus="receiveEmit" @approved="approvedDelete"></Modal>
   </v-layout>
 </template>
 
@@ -382,6 +322,14 @@ input[type=checkbox]
   background-color: #e2e8eb
   color: grey
   border: none
+.deleteBtn
+  background-color: #e9eef2
+  color: #afb3b6
+  border: 1px solid #dadbdd
+  &:hover
+    background-color: #dadbdd
+    border: 1px solid #dadbdd
+
 
 
 
