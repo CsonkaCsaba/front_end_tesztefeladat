@@ -19,10 +19,10 @@ export const UserStore = defineStore("UserStore",{
         ],
         modalElements: [
         ],
-        selected: [],
         checked : false,
         allSelected: false,
         showSumSelected: false,
+        selectedIds: [],
         addNewUser: false,
         disableBtn: false,
         disableBtnAdd: false,
@@ -41,154 +41,241 @@ export const UserStore = defineStore("UserStore",{
     },
     actions: {
 
-        orderByid(){
-            try{
-                userData.sort((a,b) => a.id - b.id)
-                this.users.push(userData);
-            } catch(error){
-                console.log(error)
-            }
-        },
-        getInitials(){
-            let index = 0;
-            userData.forEach(element => {
-                let names = element.name.trim().split(' ')
-                let namesFirstPartChar = names[0].charAt(0).toUpperCase()
-                let namesSecoundPartChar = names[1].charAt(0).toUpperCase()
-                let initial = { id: index, initial: namesFirstPartChar + namesSecoundPartChar}
-                index +=1
-                this.initials.push(initial);
-                ini.push(initial);
-            })
-            this.users[0].forEach(function(element, index) {
-                element.initial = ini[index].initial
-                element.editUser = false
-            })
-        },
-        applyStyle(value){
-            if(value == 'admin'){
-                return "applyAdminStyle";
-            }
-            if(value == 'agent'){
-                return "applyAgentStyle";
-            }
-        },
-        selectAll() {
+    orderByid(){
+        try{
+            userData.sort((a,b) => a.id - b.id)
+            this.users.push(userData);
+        } catch(error){
+            console.log(error)
+        }
+    },
 
-            let allSelect = document.querySelector('.selectAll input'),
-                inputs = document.querySelectorAll('.input_field input');
+    getInitials(){
+        let index = 0;
+        userData.forEach(element => {
+            let names = element.name.trim().split(' ')
+            let namesFirstPartChar = names[0].charAt(0).toUpperCase()
+            let namesSecoundPartChar = names[1].charAt(0).toUpperCase()
+            let initial = { id: index, initial: namesFirstPartChar + namesSecoundPartChar}
+            index +=1
+            this.initials.push(initial);
+            ini.push(initial);
+        })
+        this.users[0].forEach(function(element, index) {
+            element.initial = ini[index].initial
+            element.editUser = false
+        })
+    },
 
-            inputs.forEach(input => {
-                if(allSelect.checked){
-                    input.checked = true
-                    input.classList.add("checked")
-                    this.showSumSelected = true
+    applyStyle(value){
+        if(value == 'admin'){
+            return "applyAdminStyle";
+        }
+        if(value == 'agent'){
+            return "applyAgentStyle";
+        }
+    },
 
-                }
-                else{
-                    input.checked = false
-                    input.classList.remove("checked")
-                    this.showSumSelected = false
+    selectAll() {
 
-                }
-            })
-            this.selectedCount()
-            
-        }, selectedId(){
+        let allSelect = document.querySelector('.selectAll input'),
+            inputs = document.querySelectorAll('.input_field input');
 
-            let inputs = document.querySelectorAll('.input_field input');
-            inputs.forEach(input => {
-                if(input.checked){
-                    input.classList.add("checked")
-
-                }
-                else{
-                    input.checked = false
-                    input.classList.remove("checked")
-                    this.showSumSelected = false
-                }
-            })
-            
-            this.selectedCount()
-        },
-
-        selectedCount(){
-            let checked = document.querySelectorAll('.checked'),
-                quantity = document.querySelector('.usersSelected');
-
-            if(checked.length > 0){
+        inputs.forEach(input => {
+            if(allSelect.checked){
+                input.checked = true
+                input.classList.add("checked")
                 this.showSumSelected = true
-                quantity.innerHTML = checked.length+" users selected"
-            } else {
+
+            }
+            else{
+                input.checked = false
+                input.classList.remove("checked")
+                this.showSumSelected = false
+
+            }
+        })
+        this.selectedCount()
+        
+    }, 
+        
+    selectedId(id){
+        let inputs = document.querySelectorAll('.input_field input');
+        
+        let idArrayLength = this.selectedIds.length
+        let intId = parseInt(id)
+        let idArray = this.selectedIds
+
+        //this.selectedIds.push({id});
+        if(idArrayLength === 0){
+            this.selectedIds.push(intId);
+
+         }else{
+
+            const found = idArray.includes(intId)
+            if(found === false){
+                this.selectedIds.push(intId);
+            }else{
+
+                 // this.selectedIds.forEach(element => {
+            
+        //      if(idArray === 0){
+        //         console.log('üres')
+        //         // this.selectedIds.push(id);
+        //         // console.log(this.selectedIds)  
+        //     }
+        //     else{
+                
+        //         console.log('van')
+        //         //this.selectedIds.push(id);
+               
+        //         //console.log('nincs ilyen')
+        //         //this.selectedIds.splice(index, 1)
+        //     }
+        //     console.log(element)
+        //         }
+        //     )
+                //this.selectedIds.splice(index, 1)
+
+            }
+
+            //console.log(found)
+
+            // const found = idArray.some((el) => el.id === newId);
+            
+            // if(found === true){
+            //     this.selectedIds.push(id);
+            // }
+            // else{
+            //         alert("Van már benne ilyen")
+            //     }
+            // for (let val of this.selectedIds){
+            //     console.log(val)
+                // if(val !== id){
+                //     this.selectedIds.push(id);
+                // }
+            }
+            
+         
+         //console.log(this.selectedIds[0])
+
+        // this.selectedIds.forEach(element => {
+            
+        //      if(idArray === 0){
+        //         console.log('üres')
+        //         // this.selectedIds.push(id);
+        //         // console.log(this.selectedIds)  
+        //     }
+        //     else{
+                
+        //         console.log('van')
+        //         //this.selectedIds.push(id);
+               
+        //         //console.log('nincs ilyen')
+        //         //this.selectedIds.splice(index, 1)
+        //     }
+        //     console.log(element)
+        //         }
+        //     )
+
+        // if(index.id != null){
+        // this.selectedIds.push({id});
+        // }
+        
+        inputs.forEach(input => {
+            if(input.checked){
+                input.classList.add("checked")
+            }
+            else{
+                input.checked = false
+                input.classList.remove("checked")
                 this.showSumSelected = false
             }
-        },
-        addNewUserBtn(){
-            console.log('clicked')
-            this.disableBtnAdd = true
-            this.disableBtn = true
-            this.addNewUser = true
-           
+        })
+        this.selectedCount(id)
+    },
 
-        },
-        checkInputAdd(){
-            if(typeof(document.forms["Form"]["nameInput"] != "undefined")){
-                let inputName = document.forms["Form"]["nameInput"].value,
-                    inputEmail = document.forms["Form"]["emailInput"].value
-                    if((inputName.length != 0 && inputEmail.length != 0) ){
-                        this.disableBtn = false
-                    }
-            }
+    selectedCount(id){
+        let checked = document.querySelectorAll('.checked'),
+            quantity = document.querySelector('.usersSelected');
+
+        if(checked.length > 0){
+            this.showSumSelected = true
+            quantity.innerHTML = checked.length+" users selected"
             
-            if(document.forms["editForm"]["editname"] != "undefined"){
-                let editInputName = document.forms["editForm"]["editname"].value,
-                    editInputEmail = document.forms["editForm"]["editemail"].value;
-                    if(editInputName.length != 0 && editInputEmail.length != 0){
-                        this.disableBtn = false
-                    }
-            }    
 
             
-        },
-        checkInputEdit(){
-            if(document.forms["editForm"]["editname"] != "undefined"){
-                let editInputName = document.forms["editForm"]["editname"].value,
-                    editInputEmail = document.forms["editForm"]["editemail"].value;
-                    if(editInputName.length != 0 && editInputEmail.length != 0){
-                        this.disableBtn = false
-                    }
-            }    
+        } else {
+            this.showSumSelected = false
 
-        },
-        
-        saveNewUser(){
+        }
+    },
+
+    addNewUserBtn(){
+        console.log('clicked')
+        this.disableBtnAdd = true
+        this.disableBtn = true
+        this.addNewUser = true
+    },
+
+    checkInputAdd(){
+        if(typeof(document.forms["Form"]["nameInput"] != "undefined")){
             let inputName = document.forms["Form"]["nameInput"].value,
-                inputEmail = document.forms["Form"]["emailInput"].value,
-                inputPermission = document.forms["Form"]["permissionInput"].value;
-
-            let lastId = this.userIds += 1
-            let data = {
-                id: lastId,
-                name : inputName,
-                email : inputEmail,
-                permission : inputPermission
-            }
-            jsonData.push(data)
-            let lastElement = jsonData[jsonData.length - 1];
-            let lastInitial = lastElement.name.trim().split(' ');
-            let lastNameFirstPartChar = lastInitial[0].charAt(0).toUpperCase()
-            let lastNamesSecoundPartChar = lastInitial[1].charAt(0).toUpperCase()
-
-            jsonData.forEach(function(element) {
-                if(element.id == lastId){
-
-                    element.initial = lastNameFirstPartChar + lastNamesSecoundPartChar
+                inputEmail = document.forms["Form"]["emailInput"].value
+                if((inputName.length != 0 && inputEmail.length != 0) ){
+                    this.disableBtn = false
                 }
-            })
-            this.disableBtnAdd = false
-            this.addNewUser = false
+        }
+        
+        if(document.forms["editForm"]["editname"] != "undefined"){
+            let editInputName = document.forms["editForm"]["editname"].value,
+                editInputEmail = document.forms["editForm"]["editemail"].value;
+                if(editInputName.length != 0 && editInputEmail.length != 0){
+                    this.disableBtn = false
+                }
+        }     
+    },
 
-    }, editUser(id){
+    checkInputEdit(){
+        if(document.forms["editForm"]["editname"] != "undefined"){
+            let editInputName = document.forms["editForm"]["editname"].value,
+                editInputEmail = document.forms["editForm"]["editemail"].value;
+                if(editInputName.length != 0 && editInputEmail.length != 0){
+                    this.disableBtn = false
+                }
+        }    
+    },
+        
+    saveNewUser(){
+        let inputName = document.forms["Form"]["nameInput"].value,
+            inputEmail = document.forms["Form"]["emailInput"].value,
+            inputPermission = document.forms["Form"]["permissionInput"].value;
+
+        let lastId = this.userIds += 1
+        let data = {
+            id: lastId,
+            name : inputName,
+            email : inputEmail,
+            permission : inputPermission
+        }
+        jsonData.push(data)
+        let lastElement = jsonData[jsonData.length - 1];
+        let lastInitial = lastElement.name.trim().split(' ');
+        let lastNameFirstPartChar = lastInitial[0].charAt(0).toUpperCase()
+        let lastNamesSecoundPartChar = lastInitial[1].charAt(0).toUpperCase()
+
+        jsonData.forEach(function(element) {
+            if(element.id == lastId){
+
+                element.initial = lastNameFirstPartChar + lastNamesSecoundPartChar
+            }
+        })
+        this.disableBtnAdd = false
+        this.addNewUser = false
+
+    }, 
+    
+    editUser(id){
         this.disableBtn = true;
         let editData = {
             editName: this.editName,
@@ -201,35 +288,26 @@ export const UserStore = defineStore("UserStore",{
                 element.editUser = false
             }
         })
-
     }, 
+
     deleteUser(id, name)  {
         this.modalStatus = true
         this.message = name
         this.deleteId = id
-       
-        },
+    },
 
     receiveEmit(){
             this.modalStatus = false
-            
         },
+
     approvedDelete(){
         this.modalStatus = false
         if(this.deleteId !== null) {
-            this.users[0].forEach(function(element) {
-                if(element.id === id){
-                element.name = editData.editName
-                element.email = editData.editEmail
-                element.editUser = false
+            let index = this.users[0].find(users=>users.id == this.deleteId);
+            this.users[0].splice(index, 1)
+            this.deleteId = null
             }
-        })
-
-            // let index = this.users.find(x=>x.id == this.user.id);
-            // console.log(index)
-            //this.users.splice(index, 1)
         }
-    },
     },
      methods:{
        

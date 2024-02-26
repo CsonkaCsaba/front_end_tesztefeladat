@@ -50,7 +50,7 @@ getInitials()
   <div class="d-flex mt-6">
       <div class="d-flex">
         <p class="usersSelected" v-show="showSumSelected"></p>
-        <button type="button" class="btn deleteBtn ml-6 mb-2" @click="" v-show="showSumSelected"><i class="bi bi-trash"></i>Delete selected users</button>
+        <button type="button" class="btn deleteBtn ml-6 mb-2" @click="" v-show="showSumSelected"><i class="bi bi-trash"></i> Delete selected users</button>
       </div>
     <div class="flex-fill">
       <button type="button" class="btn btn-primary float-end mr-8 p-6 addNewUserBtn" @click="addNewUserBtn" :disabled="disableBtnAdd"><i class="bi bi-plus"></i>Add New user</button>
@@ -95,7 +95,7 @@ getInitials()
   <li v-for="user in users[0]" :key="user.id" :id="user.id">
       <div class="d-flex flex-nowrap align-items-center">
         <div class="checkbox input_field">
-          <input type="checkbox" @click="selectedId">
+          <input type="checkbox" @click="selectedId(user.id)">
         </div>
         <div class="initial w-20">
           <p>{{ user.initial }}</p> 
@@ -140,7 +140,7 @@ getInitials()
 </ul>
 </div>
 <Modal v-model="modalStatus" :message="message" @modalStatus="receiveEmit" @approved="approvedDelete"></Modal>
-  </v-layout>
+</v-layout>
 </template>
 
 <style scoped lang="sass">
@@ -247,15 +247,6 @@ input[type=checkbox]
   width: 24px
   height: 24px
  
-// .style-one
-//   background-color: $color1
-//   @extend.initial
-// .style-two
-//   background-color: $color2
-//   @extend.initial
-// .style-three
-//   background-color: $color3
-//   @extend.initial
 
 .topbar
   width: 1000px
