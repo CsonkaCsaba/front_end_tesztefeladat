@@ -3,7 +3,7 @@
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
 const { users, userIds, checked, showSumSelected, addNewUser, disableBtn, disableBtnAdd, editName, editEmail, message, modalStatus, approved } = storeToRefs(UserStore())
-const { orderByid, getInitials, selectAll, applyStyle, selectedId, addNewUserBtn, saveNewUser, editUser, checkInputEdit, checkInputAdd, deleteUser, receiveEmit, approvedDelete} = UserStore()
+const { orderByid, getInitials, selectAll, applyStyle, selectedId, addNewUserBtn, saveNewUser, editUser, checkInputEdit, checkInputAdd, deleteUser, receiveEmit, approvedDelete, deleteSelected} = UserStore()
 orderByid()
 getInitials()
 
@@ -50,7 +50,7 @@ getInitials()
   <div class="d-flex mt-6">
       <div class="d-flex">
         <p class="usersSelected" v-show="showSumSelected"></p>
-        <button type="button" class="btn deleteBtn ml-6 mb-2" @click="" v-show="showSumSelected"><i class="bi bi-trash"></i> Delete selected users</button>
+        <button type="button" class="btn deleteBtn ml-6 mb-2" @click="deleteSelected" v-show="showSumSelected"><i class="bi bi-trash"></i> Delete selected users</button>
       </div>
     <div class="flex-fill">
       <button type="button" class="btn btn-primary float-end mr-8 p-6 addNewUserBtn" @click="addNewUserBtn" :disabled="disableBtnAdd"><i class="bi bi-plus"></i>Add New user</button>

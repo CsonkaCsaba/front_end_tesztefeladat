@@ -1,12 +1,8 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
-import {ref} from 'vue'
 import jsonData from './users.json';
-
 
 let userData = jsonData;
 let ini = [];
-
 
 export const UserStore = defineStore("UserStore",{
     state: () => {
@@ -35,9 +31,6 @@ export const UserStore = defineStore("UserStore",{
         message : "",
         deleteId : null
         }
-    },
-    getters: {
-
     },
     actions: {
 
@@ -77,111 +70,59 @@ export const UserStore = defineStore("UserStore",{
     },
 
     selectAll() {
-
         let allSelect = document.querySelector('.selectAll input'),
-            inputs = document.querySelectorAll('.input_field input');
+            inputs = document.querySelectorAll('.input_field input'),
+            selectedIds = this.selectedIds,
+            allSelected = this.allSelected;
 
         inputs.forEach(input => {
             if(allSelect.checked){
                 input.checked = true
                 input.classList.add("checked")
                 this.showSumSelected = true
-
+                allSelected = true              
             }
             else{
                 input.checked = false
                 input.classList.remove("checked")
                 this.showSumSelected = false
-
+                allSelected = false
+                selectedIds.pop()
             }
         })
+
+        if( allSelected === true){
+            selectedIds.pop()
+            this.users[0].forEach(function(element, index) {
+                selectedIds.push(parseInt(index)+1);
+            })
+        } else {
+            
+        }
+
         this.selectedCount()
         
     }, 
         
     selectedId(id){
         let inputs = document.querySelectorAll('.input_field input');
-        
         let idArrayLength = this.selectedIds.length
         let intId = parseInt(id)
         let idArray = this.selectedIds
 
-        //this.selectedIds.push({id});
         if(idArrayLength === 0){
             this.selectedIds.push(intId);
 
-         }else{
-
+         }else {
             const found = idArray.includes(intId)
             if(found === false){
                 this.selectedIds.push(intId);
             }else{
-
-                 // this.selectedIds.forEach(element => {
-            
-        //      if(idArray === 0){
-        //         console.log('üres')
-        //         // this.selectedIds.push(id);
-        //         // console.log(this.selectedIds)  
-        //     }
-        //     else{
-                
-        //         console.log('van')
-        //         //this.selectedIds.push(id);
-               
-        //         //console.log('nincs ilyen')
-        //         //this.selectedIds.splice(index, 1)
-        //     }
-        //     console.log(element)
-        //         }
-        //     )
-                //this.selectedIds.splice(index, 1)
-
+                const index = idArray.indexOf(intId)
+                this.selectedIds.splice(index, 1)
             }
+        }
 
-            //console.log(found)
-
-            // const found = idArray.some((el) => el.id === newId);
-            
-            // if(found === true){
-            //     this.selectedIds.push(id);
-            // }
-            // else{
-            //         alert("Van már benne ilyen")
-            //     }
-            // for (let val of this.selectedIds){
-            //     console.log(val)
-                // if(val !== id){
-                //     this.selectedIds.push(id);
-                // }
-            }
-            
-         
-         //console.log(this.selectedIds[0])
-
-        // this.selectedIds.forEach(element => {
-            
-        //      if(idArray === 0){
-        //         console.log('üres')
-        //         // this.selectedIds.push(id);
-        //         // console.log(this.selectedIds)  
-        //     }
-        //     else{
-                
-        //         console.log('van')
-        //         //this.selectedIds.push(id);
-               
-        //         //console.log('nincs ilyen')
-        //         //this.selectedIds.splice(index, 1)
-        //     }
-        //     console.log(element)
-        //         }
-        //     )
-
-        // if(index.id != null){
-        // this.selectedIds.push({id});
-        // }
-        
         inputs.forEach(input => {
             if(input.checked){
                 input.classList.add("checked")
@@ -202,12 +143,8 @@ export const UserStore = defineStore("UserStore",{
         if(checked.length > 0){
             this.showSumSelected = true
             quantity.innerHTML = checked.length+" users selected"
-            
-
-            
         } else {
             this.showSumSelected = false
-
         }
     },
 
@@ -226,7 +163,6 @@ export const UserStore = defineStore("UserStore",{
                     this.disableBtn = false
                 }
         }
-        
         if(document.forms["editForm"]["editname"] != "undefined"){
             let editInputName = document.forms["editForm"]["editname"].value,
                 editInputEmail = document.forms["editForm"]["editemail"].value;
@@ -272,11 +208,11 @@ export const UserStore = defineStore("UserStore",{
         })
         this.disableBtnAdd = false
         this.addNewUser = false
-
     }, 
     
     editUser(id){
         this.disableBtn = true;
+        this.disableBtnAdd = false;
         let editData = {
             editName: this.editName,
             editEmail: this.editEmail
@@ -307,16 +243,40 @@ export const UserStore = defineStore("UserStore",{
             this.users[0].splice(index, 1)
             this.deleteId = null
             }
-        }
-    },
-     methods:{
-       
-     },
-     mounted:{
-        
-     },
-     computed:{
-        
-      }
+        },
+    deleteSelected(){
+        // this.users[0].forEach(function(element, index) {
+        //     if(this.users[index] == this.selectedIds.id){
+        //         console.log(this.users)
+        //     }
+        // })
+        // let arr = [...this.users[0], ...this.selectedIds]
+        // console.log(arr)
+        // console.log(arr.shift().filter( y => 
+        //     arr.every( x => x.some( j => j.Id === y.Id) ))
+        // )
+        // const indexed = Object.fromEntries(this.users[0].map(o => [o.id, o]))
+
+        // const combined = this.selectedIds.map(o => ({...o, ...indexed[o.id]}))
+
+        //console.log(combined)
+
+        let selectedIds = this.selectedIds
+        let users = this.users[0]
+        // this.users[0].forEach(function(user, index) {
+        //     selectedIds.forEach(function(selectid, indexid) {
+        //         // if(index == indexid){
+        //         //     console.log(user)
+        //         // }
+        //         console.log(index)
+        //         console.log(indexid)
+        //     })
+        // })
+        //console.log(selectedIds.diff(users));
+        //const intersection = users.filter(element => selectedIds.includes(element));
+        //const found = users.includes(this.userIds)
+        console.log(found)
+     }
+    }
 
 })
