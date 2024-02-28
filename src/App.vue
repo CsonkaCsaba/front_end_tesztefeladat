@@ -2,10 +2,11 @@
 
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
-const { users, userIds, checked, showSumSelected, addNewUser, disableBtn, disableBtnAdd, editName, editEmail, message, modalStatus, approved } = storeToRefs(UserStore())
-const { orderByid, getInitials, selectAll, applyStyle, selectedId, addNewUserBtn, saveNewUser, editUser, checkInputEdit, checkInputAdd, deleteUser, receiveEmit, approvedDelete, deleteSelected} = UserStore()
+const { users, userIds, checked, showSumSelected, addNewUser, disableBtn, disableBtnAdd, editName, editEmail, message, modalStatus, approved, paginationLength, page, start, end} = storeToRefs(UserStore())
+const { orderByid, getInitials, pagination, selectAll, applyStyle, selectedId, addNewUserBtn, saveNewUser, editUser, checkInputEdit, checkInputAdd, deleteUser, receiveEmit, approvedDelete, deleteSelected, updatePage} = UserStore()
 orderByid()
 getInitials()
+pagination()
 
 </script>
 
@@ -92,7 +93,7 @@ getInitials()
   
 
 <ul id="lista">
-  <li v-for="user in users[0]" :key="user.id" :id="user.id">
+  <li v-for="user in users[0].slice(start,end)" :key="user.id" :id="user.id">
       <div class="d-flex flex-nowrap align-items-center">
         <div class="checkbox input_field">
           <input type="checkbox" @click="selectedId(user.id)">
@@ -138,6 +139,7 @@ getInitials()
     </div>
   </li>
 </ul>
+<v-pagination v-model="page" :length="paginationLength" @update="updatePage"></v-pagination>
 </div>
 <Modal v-model="modalStatus" :message="message" @modalStatus="receiveEmit" @approved="approvedDelete"></Modal>
 </v-layout>

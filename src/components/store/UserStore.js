@@ -29,7 +29,11 @@ export const UserStore = defineStore("UserStore",{
         editName: null,
         editEmail: null,
         message : "",
-        deleteId : null
+        deleteId : null,
+        paginationLength : null,
+        page: 1,
+        start: 0,
+        end: 6,
         }
     },
     actions: {
@@ -80,7 +84,8 @@ export const UserStore = defineStore("UserStore",{
                 input.checked = true
                 input.classList.add("checked")
                 this.showSumSelected = true
-                allSelected = true              
+                allSelected = true
+                this.paginationLength = Math.ceil(this.users[0].length/6)            
             }
             else{
                 input.checked = false
@@ -147,7 +152,6 @@ export const UserStore = defineStore("UserStore",{
     },
 
     addNewUserBtn(){
-        console.log('clicked')
         this.disableBtnAdd = true
         this.disableBtn = true
         this.addNewUser = true
@@ -206,6 +210,10 @@ export const UserStore = defineStore("UserStore",{
         })
         this.disableBtnAdd = false
         this.addNewUser = false
+        this.paginationLength = Math.ceil(this.users[0].length/6)
+        this.page +=1
+        this.start += 6
+        this.end += 6
     }, 
     
     editUser(id){
@@ -254,6 +262,20 @@ export const UserStore = defineStore("UserStore",{
         let checked = document.querySelectorAll('.checked');
         this.modalStatus = true
         this.message = checked.length + " Selected Users"
+     },
+     pagination(){
+        this.paginationLength = Math.ceil(this.users[0].length/6)
+        this.page = 1
+     },
+     updatePage(){
+        if(this.page == 1){
+            this.start = 0
+            this.end = 6
+        }
+        if(this.page == 2){
+            this.start = 6
+            this.end = 12
+        }
      }
     }
 })

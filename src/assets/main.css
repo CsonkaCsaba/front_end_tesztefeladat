@@ -1,5 +1,4 @@
 
-
 a,
 .green {
   text-decoration: none;
@@ -18,15 +17,10 @@ a,
   body {
     place-items: center;
     background-color: #e9eff2;
-    height: 100% !important;
     z-index: 1 !important
-    
 
   }
-  html{
-    height: 100% !important;
-    
-  }
+ 
 
 
 }
