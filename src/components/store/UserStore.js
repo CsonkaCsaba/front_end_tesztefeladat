@@ -96,8 +96,6 @@ export const UserStore = defineStore("UserStore",{
             this.users[0].forEach(function(element, index) {
                 selectedIds.push(parseInt(index)+1);
             })
-        } else {
-            
         }
 
         this.selectedCount()
@@ -194,13 +192,13 @@ export const UserStore = defineStore("UserStore",{
             email : inputEmail,
             permission : inputPermission
         }
-        jsonData.push(data)
+        this.users[0].push(data)
         let lastElement = jsonData[jsonData.length - 1];
         let lastInitial = lastElement.name.trim().split(' ');
         let lastNameFirstPartChar = lastInitial[0].charAt(0).toUpperCase()
         let lastNamesSecoundPartChar = lastInitial[1].charAt(0).toUpperCase()
 
-        jsonData.forEach(function(element) {
+        this.users[0].forEach(function(element) {
             if(element.id == lastId){
 
                 element.initial = lastNameFirstPartChar + lastNamesSecoundPartChar
@@ -242,41 +240,20 @@ export const UserStore = defineStore("UserStore",{
             let index = this.users[0].find(users=>users.id == this.deleteId);
             this.users[0].splice(index, 1)
             this.deleteId = null
+            
+            }
+        if(this.selectedIds !== null){
+            this.users[0] = this.users[0].filter((el)=>  !this.selectedIds.includes(el.id))
+            this.showSumSelected = false
+            this.selectedIds.length = 0
+            
             }
         },
+
     deleteSelected(){
-        // this.users[0].forEach(function(element, index) {
-        //     if(this.users[index] == this.selectedIds.id){
-        //         console.log(this.users)
-        //     }
-        // })
-        // let arr = [...this.users[0], ...this.selectedIds]
-        // console.log(arr)
-        // console.log(arr.shift().filter( y => 
-        //     arr.every( x => x.some( j => j.Id === y.Id) ))
-        // )
-        // const indexed = Object.fromEntries(this.users[0].map(o => [o.id, o]))
-
-        // const combined = this.selectedIds.map(o => ({...o, ...indexed[o.id]}))
-
-        //console.log(combined)
-
-        let selectedIds = this.selectedIds
-        let users = this.users[0]
-        // this.users[0].forEach(function(user, index) {
-        //     selectedIds.forEach(function(selectid, indexid) {
-        //         // if(index == indexid){
-        //         //     console.log(user)
-        //         // }
-        //         console.log(index)
-        //         console.log(indexid)
-        //     })
-        // })
-        //console.log(selectedIds.diff(users));
-        //const intersection = users.filter(element => selectedIds.includes(element));
-        //const found = users.includes(this.userIds)
-        console.log(found)
+        let checked = document.querySelectorAll('.checked');
+        this.modalStatus = true
+        this.message = checked.length + " Selected Users"
      }
     }
-
 })

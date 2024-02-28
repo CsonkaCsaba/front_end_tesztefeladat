@@ -55,6 +55,7 @@ function approved() {
     font-style: light 
     font-size: 20px
     padding: 20px
+    z-index: 9999
 
 .deleteBtn
     color: white !important

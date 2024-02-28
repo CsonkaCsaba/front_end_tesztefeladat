@@ -1,13 +1,4 @@
-@import './base.css';
 
-#app {
-  max-width: 5000px;
-  padding: 2rem;
-  font-weight: normal;
-  width: 100%;
-  height: auto
-
-}
 
 a,
 .green {
@@ -25,14 +16,17 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    display: flex;
     place-items: center;
-    background-color: white;
+    background-color: #e9eff2;
+    height: 100% !important;
+    z-index: 1 !important
+    
+
+  }
+  html{
+    height: 100% !important;
+    
   }
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+
 }

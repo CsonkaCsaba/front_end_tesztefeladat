@@ -53,7 +53,7 @@ getInitials()
         <button type="button" class="btn deleteBtn ml-6 mb-2" @click="deleteSelected" v-show="showSumSelected"><i class="bi bi-trash"></i> Delete selected users</button>
       </div>
     <div class="flex-fill">
-      <button type="button" class="btn btn-primary float-end mr-8 p-6 addNewUserBtn" @click="addNewUserBtn" :disabled="disableBtnAdd"><i class="bi bi-plus"></i>Add New user</button>
+      <button type="button" class="btn btn-primary addNewUserBtn" @click="addNewUserBtn" :disabled="disableBtnAdd"><i class="bi bi-plus"></i>Add New user</button>
     </div>
   </div>
   <div class="d-flex topbar">  
@@ -82,7 +82,7 @@ getInitials()
       </select>
     </div>
       <div class="p-4 mt-3">
-        <button type="button" class="btn btn-primary m-2 addNewUserBtn" @click="saveNewUser" :disabled="disableBtn">Add</button>
+        <button type="button" class="btn btn-primary m-2 saveBtn" @click="saveNewUser" :disabled="disableBtn">Add</button>
         <button type="button" class="btn btn-primary m-2 cancelBtn" @click="addNewUser = false; disableBtnAdd = false">Cancel</button>
       </div>
     </form>
@@ -130,9 +130,9 @@ getInitials()
             <option value="admin">Admin</option>
           </select>
         </div>
-          <div class="p-4 mt-3">
-            <button type="submit" class="btn btn-primary m-2 addNewUserBtn" :disabled="disableBtn">Save</button>
-            <button type="button" class="btn btn-primary m-2 cancelBtn" @click="user.editUser = false; disableBtnAdd = false">Cancel</button>
+          <div class="p-4">
+            <button type="submit" class="btn btn-primary m-2 mt-3 saveBtn" :disabled="disableBtn">Save</button>
+            <button type="button" class="btn btn-primary m-2 mt-3 cancelBtn" @click="user.editUser = false; disableBtnAdd = false">Cancel</button>
           </div>
         </form>
     </div>
@@ -153,6 +153,7 @@ html, body
   font-family: "Poppins", sans-serif
   font-weight: 300
   font-style: normal
+  
   
 .navbarlist
   font-family: "Poppins", sans-serif 
@@ -176,21 +177,20 @@ html, body
 .leftnav
   background-color: #e9eff2
   border: none
+  z-index: 2!important
 
 .main
   font-family: "Poppins", sans-serif 
   font-weight: 400 
   font-style: light 
-  margin-left: 450px
+  margin-left: 219px
   background-color: white
-  width: 100%
-  height: auto
+  width: 80%
+  height: 100%
+  z-index: 3
+  border-radius: 35px 0px 0px 35px
+  position: fixed
 
-.bar
-  border: none !important
-
-.v-toolbar__content
-  border: none !important
 .initial
   color: white
   margin-right: 16px
@@ -208,15 +208,14 @@ html, body
    
 #lista
   list-style-type: none
-  width: 100%
-  height:auto
-  margin: 10px
+  width: 80%
+  height: auto
+  margin-left: 150px
   li
     background-color: white
     border: none
     color: grey
     padding: 10px
-    margin: 10px
     &:hover
       background-color: #f7fafc
       .buttons
@@ -249,23 +248,21 @@ input[type=checkbox]
  
 
 .topbar
-  width: 1000px
-  height:auto
-  margin-left: 62px
+  width: 80%
+  height: auto
+  margin-left: 190px
   color: grey
   font-size: 20px
   font-weight: 500 
 
 .usersSelected
-  margin-left: 138px
+  margin-left: 220px
   color: black
   font-size: 20px
   font-weight: 500 
 
-
-
 .permission
-  width: 300px
+  width: 200px
   padding: 15px 10px 10px 50px
 
 .buttons
@@ -303,6 +300,16 @@ input[type=checkbox]
   border: none
   font-weight: 300
   font-style: normal
+  float: right
+  margin-right: 210px
+  padding: 10px
+.saveBtn
+  color: white
+  background-color: #1cb0d3
+  border: none
+  font-weight: 300
+  padding: 10px
+
 .addNewUserForm
   background-color: #f7fafc 
   @extend .topbar
@@ -313,6 +320,7 @@ input[type=checkbox]
   background-color: #e2e8eb
   color: grey
   border: none
+  padding: 10px
 .deleteBtn
   background-color: #e9eef2
   color: #afb3b6
@@ -320,11 +328,4 @@ input[type=checkbox]
   &:hover
     background-color: #dadbdd
     border: 1px solid #dadbdd
-
-
-
-
-  
-
-
 </style>
