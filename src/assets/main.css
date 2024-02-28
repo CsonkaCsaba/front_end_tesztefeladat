@@ -17,7 +17,8 @@ a,
   body {
     place-items: center;
     background-color: #e9eff2;
-    z-index: 1 !important
+    z-index: 1 !important;
+    overflow: visilbe
 
   }
  

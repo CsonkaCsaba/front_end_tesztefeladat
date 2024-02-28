@@ -139,7 +139,7 @@ pagination()
     </div>
   </li>
 </ul>
-<v-pagination v-model="page" :length="paginationLength" @update="updatePage"></v-pagination>
+<v-pagination v-model="page" :length="paginationLength" @click="updatePage" class="mb-4"></v-pagination>
 </div>
 <Modal v-model="modalStatus" :message="message" @modalStatus="receiveEmit" @approved="approvedDelete"></Modal>
 </v-layout>
@@ -155,7 +155,6 @@ html, body
   font-family: "Poppins", sans-serif
   font-weight: 300
   font-style: normal
-  
   
 .navbarlist
   font-family: "Poppins", sans-serif 
@@ -217,7 +216,6 @@ html, body
     background-color: white
     border: none
     color: grey
-    padding: 10px
     &:hover
       background-color: #f7fafc
       .buttons
@@ -248,11 +246,10 @@ input[type=checkbox]
   width: 24px
   height: 24px
  
-
 .topbar
   width: 80%
   height: auto
-  margin-left: 190px
+  margin-left: 185px
   color: grey
   font-size: 20px
   font-weight: 500 

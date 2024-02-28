@@ -197,23 +197,20 @@ export const UserStore = defineStore("UserStore",{
             permission : inputPermission
         }
         this.users[0].push(data)
-        let lastElement = jsonData[jsonData.length - 1];
+        let lastElement = this.users[0][this.users[0].length - 1];
         let lastInitial = lastElement.name.trim().split(' ');
         let lastNameFirstPartChar = lastInitial[0].charAt(0).toUpperCase()
-        let lastNamesSecoundPartChar = lastInitial[1].charAt(0).toUpperCase()
+        let lastNamesSecondPartChar = lastInitial[1].charAt(0).toUpperCase()
 
         this.users[0].forEach(function(element) {
             if(element.id == lastId){
 
-                element.initial = lastNameFirstPartChar + lastNamesSecoundPartChar
+                element.initial = lastNameFirstPartChar + lastNamesSecondPartChar
             }
         })
         this.disableBtnAdd = false
         this.addNewUser = false
         this.paginationLength = Math.ceil(this.users[0].length/6)
-        this.page +=1
-        this.start += 6
-        this.end += 6
     }, 
     
     editUser(id){
@@ -227,6 +224,11 @@ export const UserStore = defineStore("UserStore",{
                 if(element.id === id){
                 element.name = editData.editName
                 element.email = editData.editEmail
+
+                let updateInitial = editData.editName.trim().split(' ');
+                let updateInitialFirstPartChar = updateInitial[0].charAt(0).toUpperCase()
+                let updateInitialSecondPartChar = updateInitial[1].charAt(0).toUpperCase()
+                element.initial = updateInitialFirstPartChar + updateInitialSecondPartChar
                 element.editUser = false
             }
         })
@@ -246,7 +248,7 @@ export const UserStore = defineStore("UserStore",{
         this.modalStatus = false
         if(this.deleteId !== null) {
             let index = this.users[0].find(users=>users.id == this.deleteId);
-            this.users[0].splice(index, 1)
+            this.users[0].splice(index.id-1, 1)
             this.deleteId = null
             
             }
