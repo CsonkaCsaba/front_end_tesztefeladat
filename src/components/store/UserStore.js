@@ -87,7 +87,7 @@ export const UserStore = defineStore("UserStore",{
                 allSelected = true
                 this.paginationLength = Math.ceil(this.users[0].length/6)            
             }
-            else{
+            else {
                 input.checked = false
                 input.classList.remove("checked")
                 this.showSumSelected = false
@@ -234,7 +234,7 @@ export const UserStore = defineStore("UserStore",{
         })
     }, 
 
-    deleteUser(id, name)  {
+    deleteUser(id, name)  { //delete from the row of user
         this.modalStatus = true
         this.message = name
         this.deleteId = id
@@ -244,15 +244,15 @@ export const UserStore = defineStore("UserStore",{
             this.modalStatus = false
         },
 
-    approvedDelete(){
+    approvedDelete(){ //if approved from the modal
         this.modalStatus = false
-        if(this.deleteId !== null) {
-            let index = this.users[0].find(users=>users.id == this.deleteId);
+        if(this.deleteId !== null) { // if delete command is coming from the row of user
+            let index = this.users[0].find(users=>users.id == this.deleteId); 
             this.users[0].splice(index.id-1, 1)
             this.deleteId = null
             
             }
-        if(this.selectedIds !== null){
+        if(this.selectedIds !== null){ // if delete command is coming from checkboxes and button of "Delete selected users"
             this.users[0] = this.users[0].filter((el)=>  !this.selectedIds.includes(el.id))
             this.showSumSelected = false
             this.selectedIds.length = 0
@@ -260,7 +260,7 @@ export const UserStore = defineStore("UserStore",{
             }
         },
 
-    deleteSelected(){
+    deleteSelected(){ //delete from checkboxes and button of "Delete selected users"
         let checked = document.querySelectorAll('.checked');
         this.modalStatus = true
         this.message = checked.length + " Selected Users"
@@ -279,13 +279,13 @@ export const UserStore = defineStore("UserStore",{
             this.end = 12
         }
      },
-     orderUsers(){
+     orderByUsers(){
         function compareByName(a, b) {
             return a.name.localeCompare(b.name);
           }
         this.users[0].sort(compareByName)
      },
-     orderPermission(){
+     orderByPermission(){
         function compareByPermission(a, b) {
             return a.permission.localeCompare(b.permission);
           }

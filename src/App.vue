@@ -3,7 +3,7 @@
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
 const { users, userIds, checked, showSumSelected, addNewUser, disableBtn, disableBtnAdd, editName, editEmail, message, modalStatus, approved, paginationLength, page, start, end} = storeToRefs(UserStore())
-const { orderByid, getInitials, pagination, selectAll, applyStyle, selectedId, addNewUserBtn, saveNewUser, editUser, checkInputEdit, checkInputAdd, deleteUser, receiveEmit, approvedDelete, deleteSelected, updatePage, orderUsers, orderPermission} = UserStore()
+const { orderByid, getInitials, pagination, selectAll, applyStyle, selectedId, addNewUserBtn, saveNewUser, editUser, checkInputEdit, checkInputAdd, deleteUser, receiveEmit, approvedDelete, deleteSelected, updatePage, orderByUsers, orderByPermission} = UserStore()
 orderByid()
 getInitials()
 pagination()
@@ -11,6 +11,7 @@ pagination()
 </script>
 
 <template>
+  <!-- menü/sidebar start -->
    <v-layout class="rounded rounded-md">
     <v-navigation-drawer class="leftnav d-flex align-center justify-center">
       <div class="mt-10 mb-10">
@@ -47,10 +48,12 @@ pagination()
           </div>
       </div>
     </v-navigation-drawer>
+    <!-- menü/sidebar end -->
+
 <div class="main">
   <div class="d-flex mt-6">
       <div class="d-flex">
-        <p class="usersSelected" v-show="showSumSelected"></p>
+        <p class="usersSelected" v-show="showSumSelected"></p> <!--show if top of checkbox is checked-->
         <button type="button" class="btn deleteBtn ml-6 mb-2" @click="deleteSelected" v-show="showSumSelected"><i class="bi bi-trash"></i> Delete selected users</button>
       </div>
     <div class="flex-fill">
@@ -60,14 +63,14 @@ pagination()
   <div class="d-flex topbar">  
       <div class="flex-fill selectAll">
       <input type="checkbox" class="type" @click="selectAll"> Users 
-      <button type="button" class="btn"  @click="orderUsers"><i class="bi bi-arrow-down"></i></button>
+      <button type="button" class="btn"  @click="orderByUsers"><i class="bi bi-arrow-down"></i></button> <!--order the list by name-->
       </div>
       <div  class="flex-fill mt-8">
         Permission
-        <button type="button" class="btn" @click="orderPermission"><i class="bi bi-arrow-down"></i></button>
+        <button type="button" class="btn" @click="orderByPermission"><i class="bi bi-arrow-down"></i></button> <!--order the list by permission-->
       </div>
   </div>
-  <div class="addNewUserForm p-2" v-if="addNewUser" id="userForm"> 
+  <div class="addNewUserForm p-2" v-if="addNewUser" id="userForm"> <!--show if Add New user button clicked-->
     <form class="d-inline-flex ml-8" name="Form">
     <div class="m-2">
         <label for="name" class="p-1 col text-end">Name</label>
@@ -90,10 +93,7 @@ pagination()
       </div>
     </form>
   </div>
-
-  
-  
-
+<!--list start--> 
 <ul id="lista">
   <li v-for="user in users[0].slice(start,end)" :key="user.id" :id="user.id">
       <div class="d-flex flex-nowrap align-items-center">
@@ -141,6 +141,7 @@ pagination()
     </div>
   </li>
 </ul>
+<!--list end--> 
 <v-pagination v-model="page" :length="paginationLength" @click="updatePage" class="mb-4"></v-pagination>
 </div>
 <Modal v-model="modalStatus" :message="message" @modalStatus="receiveEmit" @approved="approvedDelete"></Modal>
