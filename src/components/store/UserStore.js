@@ -278,6 +278,19 @@ export const UserStore = defineStore("UserStore",{
             this.start = 6
             this.end = 12
         }
+     },
+     orderUsers(){
+        function compareByName(a, b) {
+            return a.name.localeCompare(b.name);
+          }
+        this.users[0].sort(compareByName)
+     },
+     orderPermission(){
+        function compareByPermission(a, b) {
+            return a.permission.localeCompare(b.permission);
+          }
+        this.users[0].sort(compareByPermission)
      }
+    
     }
 })

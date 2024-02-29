@@ -3,7 +3,7 @@
 import { UserStore } from './components/store/UserStore';
 import { storeToRefs } from 'pinia';
 const { users, userIds, checked, showSumSelected, addNewUser, disableBtn, disableBtnAdd, editName, editEmail, message, modalStatus, approved, paginationLength, page, start, end} = storeToRefs(UserStore())
-const { orderByid, getInitials, pagination, selectAll, applyStyle, selectedId, addNewUserBtn, saveNewUser, editUser, checkInputEdit, checkInputAdd, deleteUser, receiveEmit, approvedDelete, deleteSelected, updatePage} = UserStore()
+const { orderByid, getInitials, pagination, selectAll, applyStyle, selectedId, addNewUserBtn, saveNewUser, editUser, checkInputEdit, checkInputAdd, deleteUser, receiveEmit, approvedDelete, deleteSelected, updatePage, orderUsers, orderPermission} = UserStore()
 orderByid()
 getInitials()
 pagination()
@@ -59,10 +59,12 @@ pagination()
   </div>
   <div class="d-flex topbar">  
       <div class="flex-fill selectAll">
-      <input type="checkbox" class="type" @click="selectAll"> Users
+      <input type="checkbox" class="type" @click="selectAll"> Users 
+      <button type="button" class="btn"  @click="orderUsers"><i class="bi bi-arrow-down"></i></button>
       </div>
-      <div  class="flex-fill mt-8 ml-8">
-        <p>Permission</p>
+      <div  class="flex-fill mt-8">
+        Permission
+        <button type="button" class="btn" @click="orderPermission"><i class="bi bi-arrow-down"></i></button>
       </div>
   </div>
   <div class="addNewUserForm p-2" v-if="addNewUser" id="userForm"> 
